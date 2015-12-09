@@ -1,13 +1,13 @@
 <?php
 
-namespace PaperG\Common;
+namespace PaperG\FirehoundBlob;
 
-use PaperG\Common\CampaignData\Budget;
-use PaperG\Common\CampaignData\Creative;
-use PaperG\Common\CampaignData\ExchangeTargeting;
-use PaperG\Common\CampaignData\PlatformTargeting;
-use PaperG\Common\CampaignData\Targeting;
-use PaperG\Common\CampaignData\Context;
+use PaperG\FirehoundBlob\CampaignData\Budget;
+use PaperG\FirehoundBlob\CampaignData\Creative;
+use PaperG\FirehoundBlob\CampaignData\ExchangeTargeting;
+use PaperG\FirehoundBlob\CampaignData\PlatformTargeting;
+use PaperG\FirehoundBlob\CampaignData\Targeting;
+use PaperG\FirehoundBlob\CampaignData\Context;
 
 class FirehoundBlob
 {
@@ -267,7 +267,7 @@ class FirehoundBlob
     }
 
     /**
-     * @param \PaperG\Common\CampaignData\Budget $budget
+     * @param \PaperG\FirehoundBlob\CampaignData\Budget $budget
      */
     public function setBudget(Budget $budget)
     {
@@ -275,7 +275,7 @@ class FirehoundBlob
     }
 
     /**
-     * @return \PaperG\Common\CampaignData\Budget
+     * @return \PaperG\FirehoundBlob\CampaignData\Budget
      */
     public function getBudget()
     {
@@ -344,7 +344,7 @@ class FirehoundBlob
     }
 
     /**
-     * @param \PaperG\Common\CampaignData\Creative $creative
+     * @param \PaperG\FirehoundBlob\CampaignData\Creative $creative
      */
     public function setCreative($creative)
     {
@@ -352,7 +352,7 @@ class FirehoundBlob
     }
 
     /**
-     * @return \PaperG\Common\CampaignData\Creative
+     * @return \PaperG\FirehoundBlob\CampaignData\Creative
      */
     public function getCreative()
     {
@@ -376,7 +376,7 @@ class FirehoundBlob
     }
 
     /**
-     * @param \PaperG\Common\CampaignData\ExchangeTargeting $exchangeTargeting
+     * @param \PaperG\FirehoundBlob\CampaignData\ExchangeTargeting $exchangeTargeting
      */
     public function setExchangeTargeting($exchangeTargeting)
     {
@@ -384,7 +384,7 @@ class FirehoundBlob
     }
 
     /**
-     * @return \PaperG\Common\CampaignData\ExchangeTargeting
+     * @return \PaperG\FirehoundBlob\CampaignData\ExchangeTargeting
      */
     public function getExchangeTargeting()
     {
@@ -424,7 +424,7 @@ class FirehoundBlob
     }
 
     /**
-     * @param \PaperG\Common\CampaignData\PlatformTargeting $platformTargeting
+     * @param \PaperG\FirehoundBlob\CampaignData\PlatformTargeting $platformTargeting
      */
     public function setPlatformTargeting($platformTargeting)
     {
@@ -432,7 +432,7 @@ class FirehoundBlob
     }
 
     /**
-     * @return \PaperG\Common\CampaignData\PlatformTargeting
+     * @return \PaperG\FirehoundBlob\CampaignData\PlatformTargeting
      */
     public function getPlatformTargeting()
     {
@@ -456,7 +456,7 @@ class FirehoundBlob
     }
 
     /**
-     * @param \PaperG\Common\CampaignData\Targeting|null $targeting
+     * @param \PaperG\FirehoundBlob\CampaignData\Targeting|null $targeting
      */
     public function setTargeting($targeting)
     {
@@ -464,7 +464,7 @@ class FirehoundBlob
     }
 
     /**
-     * @return \PaperG\Common\CampaignData\Targeting
+     * @return \PaperG\FirehoundBlob\CampaignData\Targeting
      */
     public function getTargeting()
     {

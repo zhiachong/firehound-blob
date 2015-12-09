@@ -1,6 +1,6 @@
 <?php
 
-namespace PaperG\Common\CampaignData;
+namespace PaperG\FirehoundBlob\CampaignData;
 
 use PaperG\Common\AppNexusDataIncludeFrame;
 use PaperG\Common\CampaignData\Context\FacebookContext;
@@ -268,5 +268,10 @@ class Context
     public function getFacebookContext()
     {
         return self::getValueByKey(self::FACEBOOK_CONTEXT);
+    }
+
+    public function setFacebookContext($facebookContext)
+    {
+        self::setValueByKey(self::FACEBOOK_CONTEXT, $facebookContext);
     }
 }
