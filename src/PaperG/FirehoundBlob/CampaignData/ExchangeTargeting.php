@@ -1,6 +1,6 @@
 <?php
 
-namespace PaperG\Common\CampaignData;
+namespace PaperG\FirehoundBlob\CampaignData;
 
 class ExchangeTargeting
 {
@@ -37,10 +37,11 @@ class ExchangeTargeting
 
     public static function fromAssociativeArray($exchangeTargeting)
     {
-        $appnexus = isset($exchangeTargeting[self::APPNEXUS]) ? $exchangeTargeting[self::APPNEXUS] : null;
-        $facebook = isset($exchangeTargeting[self::FACEBOOK]) ? $exchangeTargeting[self::FACEBOOK] : null;
+        $appnexus = !is_null($exchangeTargeting[self::APPNEXUS]) ? $exchangeTargeting[self::APPNEXUS] : null;
+        $facebook = !is_null($exchangeTargeting[self::FACEBOOK]) ? $exchangeTargeting[self::FACEBOOK] : null;
 
         $exchangeTargeting = new ExchangeTargeting($appnexus, $facebook);
+
         return $exchangeTargeting;
     }
 

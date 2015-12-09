@@ -1,6 +1,6 @@
 <?php
 
-namespace PaperG\Common\CampaignData;
+namespace PaperG\FirehoundBlob\CampaignData;
 
 class PlatformTargeting
 {

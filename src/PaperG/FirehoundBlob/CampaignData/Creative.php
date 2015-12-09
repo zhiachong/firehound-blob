@@ -1,6 +1,6 @@
 <?php
 
-namespace PaperG\Common\CampaignData;
+namespace PaperG\FirehoundBlob\CampaignData;
 
 class Creative
 {
@@ -12,9 +12,12 @@ class Creative
 
     //base creative, usually for Facebook
     protected $mediaUrl = null;
-    protected $callToActionText = null;
+    protected $callToAction = null;
+    protected $message = null;
     protected $caption = null;
     protected $landingPage = null;
+    protected $name = null;
+    protected $description = null;
 
     //used for serialization
     CONST ADTAG_JAVASCRIPT_SECURE = "adtag_javascript_secure";
@@ -23,11 +26,16 @@ class Creative
     CONST ADTAG_IFRAME_INSECURE = "adtag_iframe_insecure";
     CONST MEDIA_URL = "media_url";
     CONST CALL_TO_ACTION = "call_to_action";
+    CONST MESSAGE = "message";
     CONST CAPTION = "caption";
     CONST LANDING_PAGE = "landing_page";
     CONST VERSION = "version";
+    CONST NAME = "name";
+    CONST DESCRIPTION = "description";
 
     CONST CURR_VERSION = 0;
+
+    CONST FACEBOOK_DIMENSION = 70;
 
     public function __construct(
         $adtagJavascriptSecure = null,
@@ -35,9 +43,12 @@ class Creative
         $adtagIframeSecure = null,
         $adtagIframeInsecure = null,
         $mediaUrl = null,
-        $callToActionText = null,
+        $message = null,
+        $callToAction = null,
         $caption = null,
-        $landingPage = null
+        $landingPage = null,
+        $name = null,
+        $description = null
     )
     {
         $this->adtagJavascriptSecure = $adtagJavascriptSecure;
@@ -45,9 +56,12 @@ class Creative
         $this->adtagIframeSecure = $adtagIframeSecure;
         $this->adtagIframeInsecure = $adtagIframeInsecure;
         $this->mediaUrl = $mediaUrl;
-        $this->callToActionText = $callToActionText;
+        $this->message = $message;
+        $this->callToAction = $callToAction;
         $this->caption = $caption;
         $this->landingPage = $landingPage;
+        $this->name = $name;
+        $this->description = $description;
     }
 
     public function toAssociativeArray()
@@ -58,9 +72,12 @@ class Creative
             self::ADTAG_IFRAME_SECURE           => $this->adtagIframeSecure,
             self::ADTAG_IFRAME_INSECURE         => $this->adtagIframeInsecure,
             self::MEDIA_URL                     => $this->mediaUrl,
-            self::CALL_TO_ACTION                => $this->callToActionText,
+            self::CALL_TO_ACTION                => $this->callToAction,
+            self::MESSAGE                       => $this->message,
             self::CAPTION                       => $this->caption,
             self::LANDING_PAGE                  => $this->landingPage,
+            self::NAME                          => $this->name,
+            self::DESCRIPTION                   => $this->description,
             self::VERSION                       => self::CURR_VERSION
         ];
     }
@@ -72,9 +89,12 @@ class Creative
         $adtagIframeSecure = isset($creativeArray[self::ADTAG_IFRAME_SECURE]) ? $creativeArray[self::ADTAG_IFRAME_SECURE] : null;
         $adtagIframeInsecure = isset($creativeArray[self::ADTAG_IFRAME_INSECURE]) ? $creativeArray[self::ADTAG_IFRAME_INSECURE] : null;
         $mediaUrl = isset($creativeArray[self::MEDIA_URL]) ? $creativeArray[self::MEDIA_URL] : null;
-        $callToActionText = isset($creativeArray[self::CALL_TO_ACTION]) ? $creativeArray[self::CALL_TO_ACTION] : null;
+        $callToAction = isset($creativeArray[self::CALL_TO_ACTION]) ? $creativeArray[self::CALL_TO_ACTION] : null;
         $caption    = isset($creativeArray[self::CAPTION]) ? $creativeArray[self::CAPTION] : null;
         $landingPage = isset($creativeArray[self::LANDING_PAGE]) ? $creativeArray[self::LANDING_PAGE] : null;
+        $message  = isset($creativeArray[self::MESSAGE]) ? $creativeArray[self::MESSAGE] : null;
+        $description  = isset($creativeArray[self::DESCRIPTION]) ? $creativeArray[self::DESCRIPTION] : null;
+        $name  = isset($creativeArray[self::NAME]) ? $creativeArray[self::NAME] : null;
 
         $creative = new Creative(
             $adtagJavascriptSecure,
@@ -82,9 +102,12 @@ class Creative
             $adtagIframeSecure,
             $adtagIframeInsecure,
             $mediaUrl,
-            $callToActionText,
+            $message,
+            $callToAction,
             $caption,
-            $landingPage
+            $landingPage,
+            $name,
+            $description
         );
 
         return $creative;
@@ -93,8 +116,8 @@ class Creative
     public function isValid()
     {
         return isset($this->adtagJavascriptSecure) || isset($this->adtagJavascriptInsecure)
-            || isset($this->adtagIframeSecure) || isset($this->adtagIframeInsecure)
-            || (isset($this->mediaUrl) && isset($this->callToActionText));
+        || isset($this->adtagIframeSecure) || isset($this->adtagIframeInsecure)
+        || (isset($this->mediaUrl) && isset($this->message));
     }
 
     /**
@@ -170,19 +193,29 @@ class Creative
     }
 
     /**
-     * @param null|String $callToActionText
+     * @param null|String $callToAction
      */
-    public function setCallToActionText($callToActionText)
+    public function setCallToAction($callToAction)
     {
-        $this->callToActionText = $callToActionText;
+        $this->callToAction = $callToAction;
     }
 
     /**
      * @return null|String
      */
-    public function getCallToActionText()
+    public function getCallToAction()
     {
-        return $this->callToActionText;
+        return $this->callToAction;
+    }
+
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    }
+
+    public function getMessage()
+    {
+        return $this->message;
     }
 
     /**
@@ -232,4 +265,38 @@ class Creative
     {
         return $this->landingPage;
     }
+
+    /**
+     * @param null $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param null $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return null
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+
 }
