@@ -1,10 +1,9 @@
 <?php
 
-namespace PaperG\Common\CampaignData;
+namespace PaperG\FirehoundBlob\CampaignData;
 
 class Targeting
 {
-    /* @var CampaignGeoTargetingData $geographic */
     protected $geographic;
 
     //used for serialization

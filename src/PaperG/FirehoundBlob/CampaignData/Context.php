@@ -1,6 +1,6 @@
 <?php
 
-namespace PaperG\Common\CampaignData;
+namespace PaperG\FirehoundBlob\CampaignData;
 
 use PaperG\Common\AppNexusDataIncludeFrame;
 use PaperG\Common\CampaignData\Context\FacebookContext;
