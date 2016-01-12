@@ -23,11 +23,19 @@ class FirehoundBlob
     /* @var int $endDate An int representing the timestamp of a \DateTime */
     protected $endDate           = null;
 
-    /* @var Budget[] $budget An array of an "budget" (int) and "type" (string) that is either impression or dollar, together form a budget
-     * eg. [
-     *       {"budget" => 100
-     *       "type" => "dollar"}
-     *     ]
+    /* @var Budget[] $budget An array of Budgets
+     * eg. array(
+     *      "default" => array(
+     *          "amount" => 100
+     *          "amount_type" => "dollar"
+     *          "type" => "lifetime"
+     *      ),
+     *      "feed" => array(
+     *          "amount" => 123,
+     *          "amount_type" => "impression",
+     *          "type" => "daily"
+     *      )
+     * )
      * This example shows a $100 budget
      */
     protected $budgets            = null;
@@ -280,6 +288,11 @@ class FirehoundBlob
     public function getBudget()
     {
         return $this->budgets[Budget::DEFAULT_KEY];
+    }
+
+    public function getBudgets()
+    {
+        return $this->budgets;
     }
 
     /**
