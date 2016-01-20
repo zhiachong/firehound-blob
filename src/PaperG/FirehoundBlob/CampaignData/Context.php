@@ -29,8 +29,8 @@ class Context
     CONST FACEBOOK_CONTEXT          = "facebookContext";
 
     //These are values used mostly by AppNexus
-    CONST PUBLICATION_NAME          = "publisherName"; //string
-    CONST PUBLICATION_ID            = "publisherId"; //int
+    CONST PUBLICATION_NAME          = "publicationName"; //string
+    CONST PUBLICATION_ID            = "publicationId"; //int
 
     CONST APPNEXUS_VALUES           = "appnexusValues"; //this is a PaperG\PlaceLocal\API\AppNexus\ExchangeCampaign
 
