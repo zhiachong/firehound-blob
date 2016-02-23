@@ -5,6 +5,7 @@ namespace PaperG\FirehoundBlob\CampaignData;
 class Budget
 {
     CONST DEFAULT_KEY = "default";
+    CONST MOBILE_KEY  = "mobile";
 
     CONST AMOUNT_TYPE_IMPRESSION    = "impression";
     CONST AMOUNT_TYPE_DOLLAR        = "dollar";
