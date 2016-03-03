@@ -23,7 +23,7 @@ class FirehoundBlob
     /* @var int $endDate An int representing the timestamp of a \DateTime */
     protected $endDate           = null;
 
-    /* @var Budget[] $budget An array of Budgets
+    /*
      * eg. array(
      *      "default" => array(
      *          "amount" => 100
@@ -37,6 +37,8 @@ class FirehoundBlob
      *      )
      * )
      * This example shows a $100 budget
+     *
+     * @var Budget[]|null $budget An array of Budgets
      */
     protected $budgets            = null;
 
@@ -243,51 +245,53 @@ class FirehoundBlob
                 $outErrorMessage = "Creative is not completed or is invalid";
                 return false;
             }
-        }
-        else
+
+            return true;
+        } // else partial update
+
+        //in a partial update, nulls are allowed
+        if (!is_null($this->budgets))
         {
-            //in a partial update, nulls are allowed
-            if (!is_null($this->budgets))
-            {
-                $validBudget = $this->validateBudget();
+            $validBudget = $this->validateBudget();
 
-                if (!$validBudget)
-                {
-                    $outErrorMessage = "Budget is invalid";
-                    return false;
-                }
-            }
-
-            if (!is_null($this->targeting) && !$this->targeting->isValid())
+            if (!$validBudget)
             {
-                $outErrorMessage = "Targeting is invalid";
+                $outErrorMessage = "Budget is invalid";
                 return false;
             }
+        }
 
-            if (!is_null($this->creative) && !$this->creative->isValid())
-            {
-                $outErrorMessage = "Creative is invalid";
-                return false;
-            }
+        if (!is_null($this->targeting) && !$this->targeting->isValid())
+        {
+            $outErrorMessage = "Targeting is invalid";
+            return false;
+        }
+
+        if (!is_null($this->creative) && !$this->creative->isValid())
+        {
+            $outErrorMessage = "Creative is invalid";
+            return false;
         }
 
         return true;
     }
 
     /**
-     * @param \PaperG\FirehoundBlob\CampaignData\Budget $budget
+     * @param \PaperG\FirehoundBlob\CampaignData\Budget|null $budget
      */
-    public function setBudget(Budget $budget)
+    public function setBudget(Budget $budget = null)
     {
         $this->budgets[Budget::DEFAULT_KEY] = $budget;
     }
+
+
 
     /**
      * @return \PaperG\FirehoundBlob\CampaignData\Budget
      */
     public function getBudget()
     {
-        return $this->budgets[Budget::DEFAULT_KEY];
+        return isset($this->budgets[Budget::DEFAULT_KEY]) ? $this->budgets[Budget::DEFAULT_KEY] : null;
     }
 
     public function getBudgets()
@@ -495,9 +499,12 @@ class FirehoundBlob
         if (is_array($this->budgets)) // null is generally an invalid budget
         {
             $validBudget = true;
+            /**
+             * @var $budget Budget
+             */
             foreach($this->budgets as $budget)
             {
-                if (!$budget->isValid())
+                if (!is_null($budget) && !$budget->isValid())
                 {
                     $validBudget = false;
                     break;

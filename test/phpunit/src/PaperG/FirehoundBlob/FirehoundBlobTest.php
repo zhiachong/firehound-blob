@@ -9,9 +9,9 @@
 namespace PaperG\Common\Test;
 
 
-use PaperG\Common\FirehoundBlob;
+use PaperG\FirehoundBlob\FirehoundBlob;
 
-class FirehoundBlobTest extends \PHPUnit_Framework_TestCase
+class FirehoundBlobTest extends \FirehoundBlobTestCase
 {
     /**
      * @var FirehoundBlob
@@ -25,9 +25,7 @@ class FirehoundBlobTest extends \PHPUnit_Framework_TestCase
 
     public function test_getSetBudget_shouldReturnCorrectValue()
     {
-        $budget = $this->getMockBuilder('\PaperG\Common\CampaignData\Budget')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $budget = $this->buildMock('\PaperG\FirehoundBlob\CampaignData\Budget');
 
         $this->sut->setBudget($budget);
 
@@ -37,9 +35,7 @@ class FirehoundBlobTest extends \PHPUnit_Framework_TestCase
     public function test_getSetBudgetByKey()
     {
         $key = "foo";
-        $budget = $this->getMockBuilder('\PaperG\Common\CampaignData\Budget')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $budget = $this->buildMock('\PaperG\FirehoundBlob\CampaignData\Budget');
         $this->sut->setBudgetByKey($key, $budget);
         $this->assertEquals(null, $this->sut->getBudget());
         $this->assertEquals($budget, $this->sut->getBudgetByKey($key));
@@ -121,41 +117,31 @@ class FirehoundBlobTest extends \PHPUnit_Framework_TestCase
     public function test_isValidForCreation_returnsTrueForValid()
     {
         $mockId = "id";
-        $mockPlatformTargeting = $this->getMockBuilder('\PaperG\Common\CampaignData\PlatformTargeting')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockPlatformTargeting = $this->buildMock('\PaperG\FirehoundBlob\CampaignData\PlatformTargeting');
         $mockPlatformTargeting->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
         $this->sut->setPlatformTargeting($mockPlatformTargeting);
 
-        $mockExchangeTargeting = $this->getMockBuilder('\PaperG\Common\CampaignData\ExchangeTargeting')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockExchangeTargeting = $this->buildMock('\PaperG\FirehoundBlob\CampaignData\ExchangeTargeting');
         $mockExchangeTargeting->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
         $this->sut->setExchangeTargeting($mockExchangeTargeting);
 
-        $mockBudget = $this->getMockBuilder('\PaperG\Common\CampaignData\Budget')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockBudget = $this->buildMock('\PaperG\FirehoundBlob\CampaignData\Budget');
         $mockBudget->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
         $this->sut->setBudget($mockBudget);
 
-        $mockTargeting = $this->getMockBuilder('\PaperG\Common\CampaignData\Targeting')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockTargeting = $this->buildMock('\PaperG\FirehoundBlob\CampaignData\Targeting');
         $mockTargeting->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
         $this->sut->setTargeting($mockTargeting);
 
-        $mockCreative = $this->getMockBuilder('\PaperG\Common\CampaignData\Creative')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockCreative = $this->buildMock('\PaperG\FirehoundBlob\CampaignData\Creative');
         $mockCreative->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
@@ -183,23 +169,19 @@ class FirehoundBlobTest extends \PHPUnit_Framework_TestCase
     public function test_isValidNotForCreation_returnsTrueForValid()
     {
         $mockId = "id";
-        $mockPlatformTargeting = $this->getMockBuilder('\PaperG\Common\CampaignData\PlatformTargeting')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockPlatformTargeting = $this->buildMock('\PaperG\FirehoundBlob\CampaignData\PlatformTargeting');
         $mockPlatformTargeting->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
         $this->sut->setPlatformTargeting($mockPlatformTargeting);
 
-        $mockExchangeTargeting = $this->getMockBuilder('\PaperG\Common\CampaignData\ExchangeTargeting')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockExchangeTargeting = $this->buildMock('\PaperG\FirehoundBlob\CampaignData\ExchangeTargeting');
         $mockExchangeTargeting->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
         $this->sut->setExchangeTargeting($mockExchangeTargeting);
 
-        $this->sut->setBudgets(null);
+        $this->sut->setBudget(null);
         $this->sut->setTargeting(null);
         $this->sut->setCreative(null);
 

@@ -1,7 +1,7 @@
 <?php
-use PaperG\Common\CampaignData\Context\FacebookContext;
+use PaperG\FirehoundBlob\CampaignData\Context\FacebookContext;
 
-class FacebookContextTest extends PHPUnit_Framework_TestCase
+class FacebookContextTest extends FirehoundBlobTestCase
 {
     public function test_getSetPageId_shouldReturnCorrectValues()
     {
@@ -21,9 +21,7 @@ class FacebookContextTest extends PHPUnit_Framework_TestCase
 
     public function test_getSetAdSets_shouldReturnCorrectValues()
     {
-        $mockAdSet = $this->getMockBuilder('\PaperG\Facebook\FacebookAdSet')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockAdSet = $this->buildMock('\PaperG\Facebook\FacebookAdSet');
         $mockAdSets = [$mockAdSet];
         $facebookContext = new FacebookContext();
         $facebookContext->setAdSets($mockAdSets);
@@ -36,9 +34,7 @@ class FacebookContextTest extends PHPUnit_Framework_TestCase
         $mockPageID = "mockPageId";
         $mockAdAccountID = "mockAdAccountId";
         $mockAdSetArray = array("adSetId" => "bar");
-        $mockAdSet = $this->getMockBuilder('\PaperG\Facebook\FacebookAdSet')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockAdSet = $this->buildMock('\PaperG\FirehoundBlob\Facebook\FacebookAdSet');
         $mockAdSet->expects($this->once())
             ->method('toAssociativeArray')
             ->will($this->returnValue($mockAdSetArray));

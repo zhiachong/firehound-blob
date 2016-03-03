@@ -251,10 +251,8 @@ class CampaignGeoTargetingData
     {
         if (!empty($campaignGeoTargetingObj))
         {
-            if (isset($campaignGeoTargetingObj[self::REGION_ACTION]))
-            {
-                $this->regionAction = $campaignGeoTargetingObj[self::REGION_ACTION];
-            }
+            $this->regionAction = isset($campaignGeoTargetingObj[self::REGION_ACTION])
+                ? $campaignGeoTargetingObj[self::REGION_ACTION] : null;
 
             if (isset($campaignGeoTargetingObj[self::REGION_TARGETS]))
             {

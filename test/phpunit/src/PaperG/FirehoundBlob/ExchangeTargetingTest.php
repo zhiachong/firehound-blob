@@ -5,7 +5,7 @@
  * Date: 12/7/15
  * Time: 3:00 PM
  */
-use PaperG\Common\CampaignData\ExchangeTargeting;
+use PaperG\FirehoundBlob\CampaignData\ExchangeTargeting;
 
 class ExchangeTargetingTest extends \PHPUnit_Framework_TestCase
 {

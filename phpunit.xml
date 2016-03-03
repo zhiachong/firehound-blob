@@ -1,0 +1,7 @@
+<phpunit bootstrap="test/phpunit/bootstrap.php">
+    <testsuites>
+        <testsuite name="FirehoundBlob">
+            <directory>test/phpunit/src</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
