@@ -1,6 +1,6 @@
 <?php
 
-use PaperG\Common\CampaignData\Budget;
+use PaperG\FirehoundBlob\CampaignData\Budget;
 
 class BudgetTest extends \PHPUnit_Framework_TestCase
 {

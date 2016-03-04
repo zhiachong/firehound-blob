@@ -1,6 +1,6 @@
 <?php
 
-use PaperG\Common\CampaignData\Creative;
+use PaperG\FirehoundBlob\CampaignData\Creative;
 
 class CreativeTest extends PHPUnit_Framework_TestCase
 {

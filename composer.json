@@ -8,5 +8,8 @@
         "psr-0" : {
             "PaperG\\FirehoundBlob" : "src"
         }
+    },
+    "require": {
+        "facebook/php-ads-sdk": "2.5.*"
     }
 }

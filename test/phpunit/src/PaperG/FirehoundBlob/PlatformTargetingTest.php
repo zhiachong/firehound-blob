@@ -1,8 +1,8 @@
 <?php
 
-use PaperG\Common\CampaignData\PlatformTargeting;
+use PaperG\FirehoundBlob\CampaignData\PlatformTargeting;
 
-class PlatformTargetingTest extends \PHPUnit_Framework_TestCase
+class PlatformTargetingTest extends FirehoundBlobTestCase
 {
     public function test_getSetDesktop_shouldReturnCorrectValue()
     {

@@ -1,6 +1,6 @@
 <?php
 
-use PaperG\Common\CampaignData\Context;
+use PaperG\FirehoundBlob\CampaignData\Context;
 
 class ContextTest extends PHPUnit_Framework_TestCase
 {
