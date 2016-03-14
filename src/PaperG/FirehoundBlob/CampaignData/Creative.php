@@ -18,6 +18,7 @@ class Creative
     protected $landingPage = null;
     protected $name = null;
     protected $description = null;
+    protected $variationId = null;
 
     //used for serialization
     CONST ADTAG_JAVASCRIPT_SECURE = "adtag_javascript_secure";
@@ -32,8 +33,9 @@ class Creative
     CONST VERSION = "version";
     CONST NAME = "name";
     CONST DESCRIPTION = "description";
+    const VARIATION_ID = 'variation_id';
 
-    CONST CURR_VERSION = 0;
+    CONST CURR_VERSION = 1;
 
     CONST FACEBOOK_DIMENSION = 70;
 
@@ -48,9 +50,9 @@ class Creative
         $caption = null,
         $landingPage = null,
         $name = null,
-        $description = null
-    )
-    {
+        $description = null,
+        $variationId = null
+    ) {
         $this->adtagJavascriptSecure = $adtagJavascriptSecure;
         $this->adtagJavascriptInsecure = $adtagJavascriptInsecure;
         $this->adtagIframeSecure = $adtagIframeSecure;
@@ -62,23 +64,25 @@ class Creative
         $this->landingPage = $landingPage;
         $this->name = $name;
         $this->description = $description;
+        $this->variationId = $variationId;
     }
 
     public function toAssociativeArray()
     {
         return [
-            self::ADTAG_JAVASCRIPT_SECURE       => $this->adtagJavascriptSecure,
-            self::ADTAG_JAVASCRIPT_INSECURE     => $this->adtagJavascriptInsecure,
-            self::ADTAG_IFRAME_SECURE           => $this->adtagIframeSecure,
-            self::ADTAG_IFRAME_INSECURE         => $this->adtagIframeInsecure,
-            self::MEDIA_URL                     => $this->mediaUrl,
-            self::CALL_TO_ACTION                => $this->callToAction,
-            self::MESSAGE                       => $this->message,
-            self::CAPTION                       => $this->caption,
-            self::LANDING_PAGE                  => $this->landingPage,
-            self::NAME                          => $this->name,
-            self::DESCRIPTION                   => $this->description,
-            self::VERSION                       => self::CURR_VERSION
+            self::ADTAG_JAVASCRIPT_SECURE => $this->adtagJavascriptSecure,
+            self::ADTAG_JAVASCRIPT_INSECURE => $this->adtagJavascriptInsecure,
+            self::ADTAG_IFRAME_SECURE => $this->adtagIframeSecure,
+            self::ADTAG_IFRAME_INSECURE => $this->adtagIframeInsecure,
+            self::MEDIA_URL => $this->mediaUrl,
+            self::CALL_TO_ACTION => $this->callToAction,
+            self::MESSAGE => $this->message,
+            self::CAPTION => $this->caption,
+            self::LANDING_PAGE => $this->landingPage,
+            self::NAME => $this->name,
+            self::DESCRIPTION => $this->description,
+            self::VERSION => self::CURR_VERSION,
+            self::VARIATION_ID => $this->variationId
         ];
     }
 
@@ -90,11 +94,12 @@ class Creative
         $adtagIframeInsecure = isset($creativeArray[self::ADTAG_IFRAME_INSECURE]) ? $creativeArray[self::ADTAG_IFRAME_INSECURE] : null;
         $mediaUrl = isset($creativeArray[self::MEDIA_URL]) ? $creativeArray[self::MEDIA_URL] : null;
         $callToAction = isset($creativeArray[self::CALL_TO_ACTION]) ? $creativeArray[self::CALL_TO_ACTION] : null;
-        $caption    = isset($creativeArray[self::CAPTION]) ? $creativeArray[self::CAPTION] : null;
+        $caption = isset($creativeArray[self::CAPTION]) ? $creativeArray[self::CAPTION] : null;
         $landingPage = isset($creativeArray[self::LANDING_PAGE]) ? $creativeArray[self::LANDING_PAGE] : null;
-        $message  = isset($creativeArray[self::MESSAGE]) ? $creativeArray[self::MESSAGE] : null;
-        $description  = isset($creativeArray[self::DESCRIPTION]) ? $creativeArray[self::DESCRIPTION] : null;
-        $name  = isset($creativeArray[self::NAME]) ? $creativeArray[self::NAME] : null;
+        $message = isset($creativeArray[self::MESSAGE]) ? $creativeArray[self::MESSAGE] : null;
+        $description = isset($creativeArray[self::DESCRIPTION]) ? $creativeArray[self::DESCRIPTION] : null;
+        $name = isset($creativeArray[self::NAME]) ? $creativeArray[self::NAME] : null;
+        $variationId = isset($creativeArray[self::VARIATION_ID]) ? $creativeArray[self::VARIATION_ID] : null;
 
         $creative = new Creative(
             $adtagJavascriptSecure,
@@ -107,7 +112,8 @@ class Creative
             $caption,
             $landingPage,
             $name,
-            $description
+            $description,
+            $variationId
         );
 
         return $creative;
@@ -116,8 +122,8 @@ class Creative
     public function isValid()
     {
         return isset($this->adtagJavascriptSecure) || isset($this->adtagJavascriptInsecure)
-        || isset($this->adtagIframeSecure) || isset($this->adtagIframeInsecure)
-        || (isset($this->mediaUrl) && isset($this->message));
+            || isset($this->adtagIframeSecure) || isset($this->adtagIframeInsecure)
+            || (isset($this->mediaUrl) && isset($this->message));
     }
 
     /**
@@ -298,5 +304,12 @@ class Creative
         return $this->name;
     }
 
+    public function setVariationId($variationId)
+    {
+        $this->variationId = $variationId;
+    }
 
+    public function getVariationId() {
+        return $this->variationId;
+    }
 }

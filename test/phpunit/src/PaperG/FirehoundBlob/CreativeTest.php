@@ -29,12 +29,14 @@ class CreativeTest extends PHPUnit_Framework_TestCase
         $mockCall = "mockCall";
         $mockCaption = "mockCaption";
         $mockLandingPage = "mockLandingPage";
+        $mockVariationId = 432;
         $creative = new Creative();
         $creative->setMediaUrl($mockUrl);
         $creative->setMessage($mockMessage);
         $creative->setCallToAction($mockCall);
         $creative->setCaption($mockCaption);
         $creative->setLandingPage($mockLandingPage);
+        $creative->setVariationId($mockVariationId);
         $array = $creative->toAssociativeArray();
         $this->assertEquals($mockCall, $array[Creative::CALL_TO_ACTION]);
         $creative = Creative::fromAssociativeArray($array);
@@ -43,6 +45,7 @@ class CreativeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($mockCall, $creative->getCallToAction());
         $this->assertEquals($mockCaption, $creative->getCaption());
         $this->assertEquals($mockLandingPage, $creative->getLandingPage());
+        $this->assertEquals($mockVariationId, $creative->getVariationId());
     }
 
     public function test_isValidWithMessageMedia_shouldReturnTrue()
@@ -72,5 +75,13 @@ class CreativeTest extends PHPUnit_Framework_TestCase
         $creative = new Creative();
         $creative->setDescription($mockDesc);
         $this->assertEquals($mockDesc, $creative->getDescription());
+    }
+
+    public function test_getSetVariationId_should_ReturnId() {
+        $mockVariationId = 3;
+        $creative = new Creative();
+        $this->assertNull($creative->getVariationId());
+        $creative->setVariationId($mockVariationId);
+        $this->assertEquals($mockVariationId, $creative->getVariationId());
     }
 }

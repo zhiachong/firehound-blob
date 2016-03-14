@@ -9,6 +9,7 @@
 namespace PaperG\Common\Test;
 
 
+use PaperG\FirehoundBlob\CampaignData\Creative;
 use PaperG\FirehoundBlob\FirehoundBlob;
 
 class FirehoundBlobTest extends \FirehoundBlobTestCase
@@ -43,7 +44,7 @@ class FirehoundBlobTest extends \FirehoundBlobTestCase
 
     public function test_getSetContext()
     {
-        $context =  "foo";
+        $context = "foo";
 
         $this->sut->setContext($context);
         $this->assertEquals($context, $this->sut->getContext());
@@ -61,8 +62,8 @@ class FirehoundBlobTest extends \FirehoundBlobTestCase
     {
         $creative = "mock creative";
 
-        $this->sut->setCreative($creative);
-        $this->assertEquals($creative, $this->sut->getCreative());
+        $this->sut->setCreatives($creative);
+        $this->assertEquals($creative, $this->sut->getCreatives());
     }
 
     public function test_getSetEndDate()
@@ -145,7 +146,7 @@ class FirehoundBlobTest extends \FirehoundBlobTestCase
         $mockCreative->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
-        $this->sut->setCreative($mockCreative);
+        $this->sut->setCreatives([$mockCreative]);
 
 
         $this->sut->setIdentifier($mockId);
@@ -183,7 +184,7 @@ class FirehoundBlobTest extends \FirehoundBlobTestCase
 
         $this->sut->setBudget(null);
         $this->sut->setTargeting(null);
-        $this->sut->setCreative(null);
+        $this->sut->setCreatives(null);
 
 
         $this->sut->setIdentifier($mockId);
@@ -202,5 +203,23 @@ class FirehoundBlobTest extends \FirehoundBlobTestCase
         $result = $this->sut->isValid($forCreation, $message);
         $this->assertFalse($result);
         $this->assertEquals($expectedMessage, $message);
+    }
+
+    public function test_supportsLegacyCreativeParam()
+    {
+        $mockMessage = "The old man the boat.";
+        $mockArray = [FirehoundBlob::CREATIVE => [Creative::MESSAGE => $mockMessage]];
+
+        $blob = FirehoundBlob::fromAssociativeArray($mockArray);
+        $this->assertEquals($mockMessage, $blob->getCreatives()[0]->getMessage());
+    }
+
+    public function test_getCreative()
+    {
+        $mockMessage = "The old man the boat.";
+        $mockArray = [FirehoundBlob::CREATIVES => [[Creative::MESSAGE => $mockMessage]]];
+
+        $blob = FirehoundBlob::fromAssociativeArray($mockArray);
+        $this->assertEquals($mockMessage, $blob->getCreative()->getMessage());
     }
 } 
