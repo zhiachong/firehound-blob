@@ -25,28 +25,32 @@ class CampaignGeoTargetingData
     private $cityTargets;
     private $cityTargetIds;
 
-    const REGION_ACTION   = "region_action";
-    const REGION_TARGETS  = "region_targets";
-    const ZIP_ACTION      = "zip_action";
-    const ZIP_TARGETS     = "zip_targets";
-    const COUNTRY_ACTION  = "country_action";
-    const COUNTRY_TARGETS = "country_targets";
-    const DMA_ACTION      = "dma_action";
-    const DMA_TARGETS     = "dma_targets";
-    const CITY_ACTION     = "city_action";
-    const CITY_TARGETS    = "city_targets";
-    const CITY_TARGET_IDS = "city_target_ids";
-    const INCLUDE_ACTION  = 'include';
+    /**
+     * @var CityRadius[]
+     */
+    private $cityTargetRadii = [];
+
+    const REGION_ACTION     = "region_action";
+    const REGION_TARGETS    = "region_targets";
+    const ZIP_ACTION        = "zip_action";
+    const ZIP_TARGETS       = "zip_targets";
+    const COUNTRY_ACTION    = "country_action";
+    const COUNTRY_TARGETS   = "country_targets";
+    const DMA_ACTION        = "dma_action";
+    const DMA_TARGETS       = "dma_targets";
+    const CITY_ACTION       = "city_action";
+    const CITY_TARGETS      = "city_targets";
+    const CITY_TARGET_IDS   = "city_target_ids";
+    const CITY_TARGET_RADII = "city_target_radii";
+    const INCLUDE_ACTION    = 'include';
 
     public function __construct($campaignGeoTargetingObj = null)
     {
-        if (!is_array($campaignGeoTargetingObj))
-        {
+        if (!is_array($campaignGeoTargetingObj)) {
             $campaignGeoTargetingObj = (array)$campaignGeoTargetingObj;
         }
 
-        if (!empty($campaignGeoTargetingObj))
-        {
+        if (!empty($campaignGeoTargetingObj)) {
             $this->fromAssociativeArray($campaignGeoTargetingObj);
         }
     }
@@ -67,6 +71,22 @@ class CampaignGeoTargetingData
     public function setCityTargetIds($cityTargetIds)
     {
         $this->cityTargetIds = $cityTargetIds;
+    }
+
+    /**
+     * @param CityRadius[] $cityTargetRadii
+     */
+    public function setCityTargetRadii($cityTargetRadii)
+    {
+        $this->cityTargetRadii = $cityTargetRadii;
+    }
+
+    /**
+     * @return CityRadius[]
+     */
+    public function getCityTargetRadii()
+    {
+        return $this->cityTargetRadii;
     }
 
     /**
@@ -229,79 +249,87 @@ class CampaignGeoTargetingData
         $this->zipTargets = $zipTargets;
     }
 
+    public function toArray()
+    {
+        return $this->toAssociativeArray();
+    }
 
     public function toAssociativeArray()
     {
+        $radiiArray = [];
+        foreach ($this->cityTargetRadii as $cityRadius) {
+            $radiiArray[] = $cityRadius->toArray();
+        }
+
         return array(
-            self::REGION_ACTION   => $this->regionAction,
-            self::REGION_TARGETS  => $this->regionTargets,
-            self::ZIP_ACTION      => $this->zipAction,
-            self::ZIP_TARGETS     => $this->zipTargets,
-            self::COUNTRY_ACTION  => $this->countryAction,
-            self::COUNTRY_TARGETS => $this->countryTargets,
-            self::DMA_ACTION      => $this->dmaAction,
-            self::DMA_TARGETS     => $this->dmaTargets,
-            self::CITY_ACTION     => $this->cityAction,
-            self::CITY_TARGETS    => $this->cityTargets,
-            self::CITY_TARGET_IDS => $this->cityTargetIds
+            self::REGION_ACTION     => $this->regionAction,
+            self::REGION_TARGETS    => $this->regionTargets,
+            self::ZIP_ACTION        => $this->zipAction,
+            self::ZIP_TARGETS       => $this->zipTargets,
+            self::COUNTRY_ACTION    => $this->countryAction,
+            self::COUNTRY_TARGETS   => $this->countryTargets,
+            self::DMA_ACTION        => $this->dmaAction,
+            self::DMA_TARGETS       => $this->dmaTargets,
+            self::CITY_ACTION       => $this->cityAction,
+            self::CITY_TARGETS      => $this->cityTargets,
+            self::CITY_TARGET_IDS   => $this->cityTargetIds,
+            self::CITY_TARGET_RADII => $radiiArray
         );
     }
 
     public function fromAssociativeArray($campaignGeoTargetingObj)
     {
-        if (!empty($campaignGeoTargetingObj))
-        {
+        if (!empty($campaignGeoTargetingObj)) {
             $this->regionAction = isset($campaignGeoTargetingObj[self::REGION_ACTION])
                 ? $campaignGeoTargetingObj[self::REGION_ACTION] : null;
 
-            if (isset($campaignGeoTargetingObj[self::REGION_TARGETS]))
-            {
+            if (isset($campaignGeoTargetingObj[self::REGION_TARGETS])) {
                 $this->regionTargets = $campaignGeoTargetingObj[self::REGION_TARGETS];
             }
 
-            if (isset($campaignGeoTargetingObj[self::ZIP_ACTION]))
-            {
+            if (isset($campaignGeoTargetingObj[self::ZIP_ACTION])) {
                 $this->zipAction = $campaignGeoTargetingObj[self::ZIP_ACTION];
             }
 
-            if (isset($campaignGeoTargetingObj[self::ZIP_TARGETS]))
-            {
+            if (isset($campaignGeoTargetingObj[self::ZIP_TARGETS])) {
                 $this->zipTargets = $campaignGeoTargetingObj[self::ZIP_TARGETS];
             }
 
-            if (isset($campaignGeoTargetingObj[self::COUNTRY_ACTION]))
-            {
+            if (isset($campaignGeoTargetingObj[self::COUNTRY_ACTION])) {
                 $this->countryAction = $campaignGeoTargetingObj[self::COUNTRY_ACTION];
             }
 
-            if (isset($campaignGeoTargetingObj[self::COUNTRY_TARGETS]))
-            {
+            if (isset($campaignGeoTargetingObj[self::COUNTRY_TARGETS])) {
                 $this->countryTargets = $campaignGeoTargetingObj[self::COUNTRY_TARGETS];
             }
 
-            if (isset($campaignGeoTargetingObj[self::DMA_ACTION]))
-            {
+            if (isset($campaignGeoTargetingObj[self::DMA_ACTION])) {
                 $this->dmaAction = $campaignGeoTargetingObj[self::DMA_ACTION];
             }
 
-            if (isset($campaignGeoTargetingObj[self::DMA_TARGETS]))
-            {
+            if (isset($campaignGeoTargetingObj[self::DMA_TARGETS])) {
                 $this->dmaTargets = $campaignGeoTargetingObj[self::DMA_TARGETS];
             }
 
-            if (isset($campaignGeoTargetingObj[self::CITY_ACTION]))
-            {
+            if (isset($campaignGeoTargetingObj[self::CITY_ACTION])) {
                 $this->cityAction = $campaignGeoTargetingObj[self::CITY_ACTION];
             }
 
-            if (isset($campaignGeoTargetingObj[self::CITY_TARGETS]))
-            {
+            if (isset($campaignGeoTargetingObj[self::CITY_TARGETS])) {
                 $this->cityTargets = $campaignGeoTargetingObj[self::CITY_TARGETS];
             }
 
-            if (isset($campaignGeoTargetingObj[self::CITY_TARGET_IDS]))
-            {
+            if (isset($campaignGeoTargetingObj[self::CITY_TARGET_IDS])) {
                 $this->cityTargetIds = $campaignGeoTargetingObj[self::CITY_TARGET_IDS];
+            }
+
+            if (isset($campaignGeoTargetingObj[self::CITY_TARGET_RADII]) && is_array(
+                    $campaignGeoTargetingObj[self::CITY_TARGET_RADII]
+                )
+            ) {
+                foreach ($campaignGeoTargetingObj[self::CITY_TARGET_RADII] as $cityRadius) {
+                    $this->cityTargetRadii[] = new CityRadius($cityRadius);
+                }
             }
         }
     }
