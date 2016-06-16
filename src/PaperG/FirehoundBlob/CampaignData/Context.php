@@ -35,6 +35,9 @@ class Context
 
     CONST APPNEXUS_VALUES           = "appnexusValues"; //this is a PaperG\PlaceLocal\API\AppNexus\ExchangeCampaign
 
+    // Value used for ramping
+    CONST SUBMISSION_DATE           = "submissionDate";
+
     public function __construct($values = Array())
     {
         $this->values = $values;
@@ -274,5 +277,15 @@ class Context
     public function setFacebookContext($facebookContext)
     {
         self::setValueByKey(self::FACEBOOK_CONTEXT, $facebookContext);
+    }
+
+    public function getSubmissionDate()
+    {
+        return self::getValueByKey(self::SUBMISSION_DATE);
+    }
+
+    public function setSubmissionDate($submissionDate)
+    {
+        self::setValueByKey(self::SUBMISSION_DATE, $submissionDate);
     }
 }
