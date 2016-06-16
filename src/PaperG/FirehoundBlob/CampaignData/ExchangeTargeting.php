@@ -37,8 +37,8 @@ class ExchangeTargeting
 
     public static function fromAssociativeArray($exchangeTargeting)
     {
-        $appnexus = !is_null($exchangeTargeting[self::APPNEXUS]) ? $exchangeTargeting[self::APPNEXUS] : null;
-        $facebook = !is_null($exchangeTargeting[self::FACEBOOK]) ? $exchangeTargeting[self::FACEBOOK] : null;
+        $appnexus = isset($exchangeTargeting[self::APPNEXUS]) ? $exchangeTargeting[self::APPNEXUS] : null;
+        $facebook = isset($exchangeTargeting[self::FACEBOOK]) ? $exchangeTargeting[self::FACEBOOK] : null;
 
         $exchangeTargeting = new ExchangeTargeting($appnexus, $facebook);
 
