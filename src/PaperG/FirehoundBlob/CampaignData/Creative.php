@@ -123,7 +123,7 @@ class Creative
     {
         return isset($this->adtagJavascriptSecure) || isset($this->adtagJavascriptInsecure)
             || isset($this->adtagIframeSecure) || isset($this->adtagIframeInsecure)
-            || (isset($this->mediaUrl) && isset($this->message));
+            || isset($this->mediaUrl);
     }
 
     /**
