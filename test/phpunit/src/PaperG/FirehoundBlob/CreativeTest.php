@@ -54,7 +54,7 @@ class CreativeTest extends PHPUnit_Framework_TestCase
         $mockMessage = "mockMessage";
         $creative = new Creative();
         $creative->setMediaUrl($mockMedia);
-        $this->assertFalse($creative->isValid());
+        $this->assertTrue($creative->isValid());
         $creative->setMessage($mockMessage);
         $this->assertTrue($creative->isValid());
         $this->assertEquals($mockMedia, $creative->getMediaUrl());
