@@ -37,7 +37,6 @@ class BasicInfoTest extends \FirehoundBlobTestCase
         $this->sut->setUuid($mockUuid);
         $this->sut->setMetadata($mockMeta);
         $this->sut->setScenario($mockScenario);
-        $this->sut->setVersion(BasicInfo::CURRENT_VERSION);
 
         $array = $this->sut->toArray();
         $array[BasicInfo::BLOB] = $mockBlob;

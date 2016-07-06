@@ -13,6 +13,4 @@ interface BlobInterface {
      * @param $array array
      */
     public function fromArray($array);
-
-    public function validate();
 } 
