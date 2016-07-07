@@ -9,18 +9,18 @@
 namespace PaperG\Common\Test\Facebook;
 
 
-use PaperG\FirehoundBlob\Facebook\FacebookBlob;
+use PaperG\FirehoundBlob\Facebook\UnmanagedFacebookBlob;
 
-class FacebookBlobTest extends \FirehoundBlobTestCase
+class UnmanagedFacebookBlobTest extends \FirehoundBlobTestCase
 {
     /**
-     * @var FacebookBlob
+     * @var UnmanagedFacebookBlob
      */
     private $sut;
 
     public function setUp()
     {
-        $this->sut = new FacebookBlob();
+        $this->sut = new UnmanagedFacebookBlob();
     }
 
     public function testToFromArray() {
@@ -41,7 +41,7 @@ class FacebookBlobTest extends \FirehoundBlobTestCase
 
         $array  = $this->sut->toArray();
 
-        $new = new FacebookBlob();
+        $new = new UnmanagedFacebookBlob();
         $new->fromArray($array);
 
         $this->assertEquals($this->sut, $new);

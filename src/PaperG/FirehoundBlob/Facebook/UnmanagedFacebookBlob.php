@@ -15,7 +15,7 @@ use PaperG\FirehoundBlob\Facebook\Targeting\FacebookDemographicTargeting;
 use PaperG\FirehoundBlob\Facebook\Targeting\FacebookGeographicTargeting;
 use PaperG\FirehoundBlob\Utility;
 
-class FacebookBlob implements BlobInterface
+class UnmanagedFacebookBlob implements BlobInterface
 {
     use Utility;
 
