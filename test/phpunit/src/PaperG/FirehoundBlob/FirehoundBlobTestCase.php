@@ -13,4 +13,22 @@ class FirehoundBlobTestCase extends \PHPUnit_Framework_TestCase{
             ->disableOriginalConstructor()
             ->getMock();
     }
+
+    protected function addExpectation(
+        PHPUnit_Framework_MockObject_MockObject $mockObject,
+        $times,
+        $methodName,
+        $args = null,
+        $retVal = null
+    ) {
+        $invocation = $mockObject->expects($times)
+            ->method($methodName);
+        if (!empty($args)) {
+            $invocation->with($args);
+        }
+
+        if (!empty($retVal)) {
+            $invocation->willReturn($retVal);
+        }
+    }
 } 
