@@ -2,10 +2,6 @@
 
 namespace PaperG\FirehoundBlob\Facebook;
 
-
-use FacebookAds\Object\Values\OptimizationGoals;
-use FacebookAds\Object\Values\PageTypes;
-
 class FacebookAdSet
 {
 
@@ -130,29 +126,44 @@ class FacebookAdSet
         $this->type = isset($array[self::TYPE]) ? $array[self::TYPE] : null;
     }
 
-    public function validate()
+    /**
+     * @param null|[] $validPlacements Typically the returned value from FacebookSDK
+     * PageTypes::getInstance()->getValues()
+     * @param null|[] $validOptimizationGoals Typically the returned value from FacebookSDK
+     * OptimizationGoals::getInstance()->getValues()
+     * @return bool
+     */
+    public function validate($validPlacements = null, $validOptimizationGoals = null)
     {
-        $valid = $this->validatePlacements();
-        $valid = $valid && $this->validateGoal();
+        $valid = $this->validatePlacements($validPlacements);
+        $valid = $valid && $this->validateGoal($validOptimizationGoals);
 
         return $valid;
     }
 
-    private function validatePlacements()
+    private function validatePlacements($validPlacements)
     {
+        if (empty($validPlacements)) {
+            return true;
+        }
+
         $valid = !empty($this->placements);
         $valid = $valid && is_array($this->placements);
         if ($valid) {
             foreach ($this->placements as $placement) {
-                $valid = $valid && in_array($placement, PageTypes::getInstance()->getValues());
+                $valid = $valid && in_array($placement, $validPlacements);
             }
         }
 
         return $valid;
     }
 
-    private function validateGoal()
+    private function validateGoal($validOptimizationGoals)
     {
-        return in_array($this->optimizationGoal, OptimizationGoals::getInstance()->getValues());
+        if (empty($validOptimizationGoals)) {
+            return true;
+        }
+
+        return in_array($this->optimizationGoal, $validOptimizationGoals);
     }
 } 
