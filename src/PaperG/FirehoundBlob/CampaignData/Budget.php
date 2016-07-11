@@ -2,7 +2,9 @@
 
 namespace PaperG\FirehoundBlob\CampaignData;
 
-class Budget
+use PaperG\FirehoundBlob\BlobInterface;
+
+class Budget implements BlobInterface
 {
     CONST DEFAULT_KEY = "default";
     CONST MOBILE_KEY  = "mobile";
@@ -112,5 +114,18 @@ class Budget
     public function getBudgetType()
     {
         return $this->budgetType;
+    }
+
+    public function toArray()
+    {
+        return $this->toAssociativeArray();
+    }
+
+    public function fromArray($budgetArray)
+    {
+        $this->amount = isset($budgetArray[self::AMOUNT]) ? intval($budgetArray[self::AMOUNT]) : null;
+        $this->amountType = isset($budgetArray[self::AMOUNT_TYPE]) ? $budgetArray[self::AMOUNT_TYPE] : null;
+        $this->budgetType = isset($budgetArray[self::BUDGET_TYPE]) ? $budgetArray[self::BUDGET_TYPE] : null;
+
     }
 }

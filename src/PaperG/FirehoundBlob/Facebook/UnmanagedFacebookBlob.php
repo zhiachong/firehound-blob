@@ -8,8 +8,8 @@
 
 namespace PaperG\FirehoundBlob\Facebook;
 
-
 use PaperG\FirehoundBlob\BlobInterface;
+use PaperG\FirehoundBlob\CampaignData\Budget;
 use PaperG\FirehoundBlob\Facebook\Targeting\FacebookAudienceTargeting;
 use PaperG\FirehoundBlob\Facebook\Targeting\FacebookDemographicTargeting;
 use PaperG\FirehoundBlob\Facebook\Targeting\FacebookGeographicTargeting;
@@ -31,6 +31,7 @@ class UnmanagedFacebookBlob implements BlobInterface
     const ACCESS_TOKEN = 'accessToken';
     const AD_SETS = 'adSets';
     const CREATIVE = 'creative';
+    const BUDGET = 'budget';
     const VERSION = 'version';
 
     const CURRENT_VERSION = 1;
@@ -94,6 +95,11 @@ class UnmanagedFacebookBlob implements BlobInterface
      * @var FacebookCreative
      */
     private $creative;
+
+    /**
+     * @var Budget
+     */
+    private $budget;
 
     public function __construct($array = null)
     {
@@ -293,6 +299,22 @@ class UnmanagedFacebookBlob implements BlobInterface
     }
 
     /**
+     * @return Budget
+     */
+    public function getBudget()
+    {
+        return $this->budget;
+    }
+
+    /**
+     * @param Budget $budget
+     */
+    public function setBudget(Budget $budget)
+    {
+        $this->budget = $budget;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -312,6 +334,7 @@ class UnmanagedFacebookBlob implements BlobInterface
             self::PAGE_ID               => $this->pageId,
             self::ACCESS_TOKEN          => $this->accessToken,
             self::CREATIVE              => isset($this->creative) ? $this->creative->toArray() : null,
+            self::BUDGET                => isset($this->budget) ? $this->budget->toArray() : null,
             self::VERSION               => self::CURRENT_VERSION
         ];
         $adSets = null;
@@ -357,5 +380,8 @@ class UnmanagedFacebookBlob implements BlobInterface
         }
         $this->adSets   = $adSetResults; // versioned, might need builder
         $this->creative = new FacebookCreative($this->safeGet($array, self::CREATIVE)); // versioned, might need builder
+        $budget = new Budget(null);
+        $budget->fromArray($this->safeGet($array, self::BUDGET));
+        $this->budget  = $budget;
     }
 }
