@@ -12,10 +12,6 @@ namespace PaperG\FirehoundBlob\ScenarioValidators;
 use PaperG\FirehoundBlob\CampaignData\Budget;
 use PaperG\FirehoundBlob\CampaignData\Context;
 use PaperG\FirehoundBlob\Facebook\FacebookAdSet;
-use PaperG\FirehoundBlob\Facebook\FacebookCreative;
-use PaperG\FirehoundBlob\Facebook\Targeting\FacebookAudienceTargeting;
-use PaperG\FirehoundBlob\Facebook\Targeting\FacebookDemographicTargeting;
-use PaperG\FirehoundBlob\Facebook\Targeting\FacebookGeographicTargeting;
 use PaperG\FirehoundBlob\Facebook\UnmanagedFacebookBlob;
 use PaperG\FirehoundBlob\ScenarioBlob;
 
@@ -23,29 +19,26 @@ class UnmanagedFacebookValidator implements ScenarioValidator
 {
     private function validateRequiredCreateFields(UnmanagedFacebookBlob $facebookBlob)
     {
-        $validationMessage = '';
-        $validationResult  = true;
-
         $coreFieldsValidationResults = $this->validateCoreRequiredFields($facebookBlob);
-        $validationResult &= $coreFieldsValidationResults[self::VALIDATION_RESULT];
-        $validationMessage .= $coreFieldsValidationResults[self::VALIDATION_MESSAGE];
+        $validationResult = $coreFieldsValidationResults[self::VALIDATION_RESULT];
+        $validationMessage = $coreFieldsValidationResults[self::VALIDATION_MESSAGE];
 
         $status = $facebookBlob->getStatus();
         if (empty($status) || !$this->validateStatus($status)) {
             $validationMessage .= "Blob doesn't contain valid status. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $adSets = $facebookBlob->getAdSets();
         if (empty($adSets) || !$this->validateAdSets($adSets)) {
             $validationMessage .= "Blob doesn't contain ad sets or the ad sets are not valid. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $creative = $facebookBlob->getCreative();
-        if (empty($creative) || !$this->validateCreative($creative)) {
+        if (empty($creative) || !$creative->isValid()) {
             $validationMessage .= "Blob doesn't contain creative or the creative is not valid. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         return [self::VALIDATION_RESULT => $validationResult, self::VALIDATION_MESSAGE => $validationMessage];
@@ -53,29 +46,26 @@ class UnmanagedFacebookValidator implements ScenarioValidator
 
     private function validateRequiredUpdateFields(UnmanagedFacebookBlob $facebookBlob)
     {
-        $validationResult = true;
-        $validationMessage = '';
-
         $coreFieldsValidationResults = $this->validateCoreRequiredFields($facebookBlob);
-        $validationResult &= $coreFieldsValidationResults[self::VALIDATION_RESULT];
-        $validationMessage .= $coreFieldsValidationResults[self::VALIDATION_MESSAGE];
+        $validationResult = $coreFieldsValidationResults[self::VALIDATION_RESULT];
+        $validationMessage = $coreFieldsValidationResults[self::VALIDATION_MESSAGE];
 
         $status = $facebookBlob->getStatus();
         if (!empty($status) && !$this->validateStatus($status)) {
             $validationMessage .= "Blob doesn't contain valid status. Status is: " . $status;
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $adSets = $facebookBlob->getAdSets();
         if (!empty($adSets) && !$this->validateAdSets($adSets)) {
             $validationMessage .= "Blob doesn't contain ad sets or the ad sets are not valid. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $creative = $facebookBlob->getCreative();
-        if (empty($creative) || !$this->validateCreative($creative)) {
+        if (!empty($creative) && !$creative->isValid()) {
             $validationMessage .= "Blob doesn't contain creative or the creative is not valid. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         return [self::VALIDATION_RESULT => $validationResult, self::VALIDATION_MESSAGE => $validationMessage];
@@ -89,19 +79,19 @@ class UnmanagedFacebookValidator implements ScenarioValidator
         $adAcctId = $facebookBlob->getAdAccountId();
         if (empty($adAcctId) || !is_string($adAcctId)) {
             $validationMessage .= "Blob doesn't contain a valid ad account ID. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $pageId = $facebookBlob->getPageId();
         if (empty($pageId) || !is_string($pageId)) {
             $validationMessage .= "Blob doesn't contain a valid page ID. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $accessToken = $facebookBlob->getAccessToken();
         if (empty($accessToken) || !is_string($accessToken)) {
             $validationMessage .= "Blob doesn't contain a valid access token. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         return [
@@ -112,43 +102,52 @@ class UnmanagedFacebookValidator implements ScenarioValidator
 
     private function validateOptionalFields(UnmanagedFacebookBlob $facebookBlob)
     {
-        $validationResult  = true;
-        $validationMessage = '';
+        $validateTargeting = $this->validateTargeting($facebookBlob);
+        $validationResult = $validateTargeting[self::VALIDATION_RESULT];
+        $validationMessage = $validateTargeting[self::VALIDATION_MESSAGE];
 
         $startDate = $facebookBlob->getStartDate();
         if (!empty($startDate) && !is_numeric($startDate)) {
             $validationMessage .= "Start date is non-numerical. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $endDate = $facebookBlob->getEndDate();
         if (!empty($endDate) && !is_numeric($endDate)) {
             $validationMessage .= "End date is non-numerical. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $budget = $facebookBlob->getBudget();
         if (!empty($budget) && !$this->validateBudget($budget)) {
             $validationMessage .= "Budget is invalid. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
+        return [self::VALIDATION_RESULT => $validationResult, self::VALIDATION_MESSAGE => $validationMessage];
+    }
+
+    private function validateTargeting(UnmanagedFacebookBlob $facebookBlob)
+    {
+        $validationResult = true;
+        $validationMessage = "";
+
         $geographicTargeting = $facebookBlob->getGeographicTargeting();
-        if (!empty($geographicTargeting) && !$this->validateGeographicTargeting($geographicTargeting)) {
+        if (!empty($geographicTargeting) && !$geographicTargeting->isValid()) {
             $validationMessage .= "Geographic targeting is invalid. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $demographicTargeting = $facebookBlob->getDemographicTargeting();
-        if (!empty($demographicTargeting) && !$this->validateDemographicTargeting($demographicTargeting)) {
+        if (!empty($demographicTargeting) && !$demographicTargeting->isValid()) {
             $validationMessage .= "Demographic targeting is invalid. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         $audienceTargeting = $facebookBlob->getAudienceTargeting();
-        if (!empty($audienceTargeting) && !$this->validateAudienceTargeting($audienceTargeting)) {
+        if (!empty($audienceTargeting) && !$audienceTargeting->isValid()) {
             $validationMessage .= "Audience targeting is invalid. ";
-            $validationResult &= false;
+            $validationResult = false;
         }
 
         return [self::VALIDATION_RESULT => $validationResult, self::VALIDATION_MESSAGE => $validationMessage];
@@ -179,25 +178,6 @@ class UnmanagedFacebookValidator implements ScenarioValidator
     }
 
     /**
-     * @param $creative FacebookCreative
-     *
-     * @return bool
-     */
-    private function validateCreative($creative)
-    {
-        if (!empty($creative)) {
-            $creativeData = $creative->getObjects();
-            $creativeType = $creative->getType();
-
-            if (empty($creativeType) || empty($creativeData)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * @param $budget
      *
      * @return bool
@@ -214,44 +194,25 @@ class UnmanagedFacebookValidator implements ScenarioValidator
         return true;
     }
 
-    private function validateGeographicTargeting(FacebookGeographicTargeting $geoTargeting)
+    private function validate(ScenarioBlob $blob, $isCreate)
     {
-        if (!(
-            (!empty($geoTargeting->getCountryAction()) && !empty($geoTargeting->getCountryIds())) ||
-            (!empty($geoTargeting->getCityAction()) && !empty($geoTargeting->getCityIds())) ||
-            (!empty($geoTargeting->getRegionAction()) && !empty($geoTargeting->getRegionIds())) ||
-            (!empty($geoTargeting->getPostalAction()) && !empty($geoTargeting->getPostalCodes()))
-        )
-        ) {
-            return false;
+        $facebookBlob = $blob->getBlob();
+
+        if (empty($facebookBlob)) {
+            return [self::VALIDATION_RESULT => false, self::VALIDATION_MESSAGE => "Facebook unmanaged blob is empty. "];
         }
 
-        return true;
+        $validateResults = ($isCreate) ?
+            $this->validateRequiredCreateFields($facebookBlob) :
+            $this->validateRequiredUpdateFields($facebookBlob);
+
+        $optionalFieldsValidationResults = $this->validateOptionalFields($facebookBlob);
+
+        return [
+            self::VALIDATION_RESULT  => $validateResults[self::VALIDATION_RESULT] && $optionalFieldsValidationResults[self::VALIDATION_RESULT],
+            self::VALIDATION_MESSAGE => $validateResults[self::VALIDATION_MESSAGE] . $optionalFieldsValidationResults[self::VALIDATION_MESSAGE]
+        ];
     }
-
-    private function validateDemographicTargeting(FacebookDemographicTargeting $demographicTargeting)
-    {
-        if ($demographicTargeting->getMinAge() < 18 ||
-            $demographicTargeting->getMaxAge() > 65
-        ) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function validateAudienceTargeting(FacebookAudienceTargeting $audienceTargeting)
-    {
-        if (empty($audienceTargeting->getType()) ||
-            empty($audienceTargeting->getIds()) ||
-            !is_array(($audienceTargeting->getIds()))
-        ) {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * Determines if a create blob is valid
      *
@@ -261,19 +222,7 @@ class UnmanagedFacebookValidator implements ScenarioValidator
      */
     public function isValidCreateBlob($blob)
     {
-        $facebookBlob = $blob->getBlob();
-
-        if (empty($facebookBlob)) {
-            return [self::VALIDATION_RESULT => false, self::VALIDATION_MESSAGE => "Facebook unmanaged blob is empty. "];
-        }
-
-        $validateResults = $this->validateRequiredCreateFields($facebookBlob);
-        $optionalFieldsValidationResults = $this->validateOptionalFields($facebookBlob);
-
-        return [
-            self::VALIDATION_RESULT  => $validateResults[self::VALIDATION_RESULT] && $optionalFieldsValidationResults[self::VALIDATION_RESULT],
-            self::VALIDATION_MESSAGE => $validateResults[self::VALIDATION_MESSAGE] . $optionalFieldsValidationResults[self::VALIDATION_MESSAGE]
-        ];
+        return $this->validate($blob, true);
     }
 
     /**
@@ -285,19 +234,7 @@ class UnmanagedFacebookValidator implements ScenarioValidator
      */
     public function isValidUpdateBlob($blob)
     {
-        $facebookBlob = $blob->getBlob();
-
-        if (empty($facebookBlob)) {
-            return [self::VALIDATION_RESULT => false, self::VALIDATION_MESSAGE => "Facebook unmanaged blob is empty. "];
-        }
-
-        $validateResults = $this->validateRequiredUpdateFields($facebookBlob);
-        $optionalFieldsValidationResults = $this->validateOptionalFields($facebookBlob);
-
-        return [
-            self::VALIDATION_RESULT  => $validateResults[self::VALIDATION_RESULT] && $optionalFieldsValidationResults[self::VALIDATION_RESULT],
-            self::VALIDATION_MESSAGE => $validateResults[self::VALIDATION_MESSAGE] . $optionalFieldsValidationResults[self::VALIDATION_MESSAGE]
-        ];
+        return $this->validate($blob, false);
     }
 }
 

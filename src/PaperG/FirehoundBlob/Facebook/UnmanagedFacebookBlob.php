@@ -384,6 +384,4 @@ class UnmanagedFacebookBlob implements BlobInterface
         $budget->fromArray($this->safeGet($array, self::BUDGET));
         $this->budget  = $budget;
     }
-
-
 }

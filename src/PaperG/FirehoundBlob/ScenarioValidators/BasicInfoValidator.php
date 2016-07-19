@@ -29,41 +29,32 @@ class BasicInfoValidator implements ScenarioValidator
 
         $basicInfo = $blob->getBasicInfo();
         if (empty($basicInfo)) {
-            $validationMessage = "Basic info is not filled. ";
-            return [self::VALIDATION_RESULT => false, self::VALIDATION_MESSAGE => $validationMessage];
+            return [self::VALIDATION_RESULT => false, self::VALIDATION_MESSAGE => "Basic info is not filled. "];
         }
 
         $name = $basicInfo->getName();
         if (empty($name) || !is_string($name)) {
-            $validationResults &= false;
+            $validationResults = false;
             $validationMessage .= "Basic info's name is not a valid string. ";
         }
 
         $uuid = $basicInfo->getUuid();
         if (empty($uuid) || !is_string($uuid)) {
-            $validationResults &= false;
+            $validationResults = false;
             $validationMessage .= "Basic info's UUID is not a valid string. ";
         }
 
         $metadata = $basicInfo->getMetadata();
         if (!empty($metadata) && !is_string($metadata)) {
-            $validationResults &= false;
+            $validationResults = false;
             $validationMessage .= "Basic info's metadata is not a valid string. ";
         }
 
-        $validScenarios = [
-            Scenario::AN_DESKTOP,
-            Scenario::AN_DESKTOP_MOBILE,
-            Scenario::AN_MOBILE,
-            Scenario::FB_MANAGED,
-            Scenario::FB_UNMANAGED
-        ];
         $scenario       = $basicInfo->getScenario();
         if (empty($scenario) ||
-            !is_string($scenario) ||
-            !in_array($scenario, $validScenarios)
+            !is_string($scenario)
         ) {
-            $validationResults &= false;
+            $validationResults = false;
             $validationMessage .= "Basic info does not contain valid scenario. ";
         }
 
@@ -82,6 +73,4 @@ class BasicInfoValidator implements ScenarioValidator
         // Basic info should work the same for both create and update
         return $this->isValidCreateBlob($blob);
     }
-
-
 }

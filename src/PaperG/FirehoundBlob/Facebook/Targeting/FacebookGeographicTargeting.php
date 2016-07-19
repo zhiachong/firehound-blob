@@ -199,6 +199,16 @@ class FacebookGeographicTargeting implements BlobInterface
         return $this->regionIds;
     }
 
+    public function isValid()
+    {
+        return (
+            (!empty($this->getCountryAction()) && !empty($this->getCountryIds())) ||
+            (!empty($this->getCityAction()) && !empty($this->getCityIds())) ||
+            (!empty($this->getRegionAction()) && !empty($this->getRegionIds())) ||
+            (!empty($this->getPostalAction()) && !empty($this->getPostalCodes()))
+        );
+    }
+
     /**
      * @return array
      */
@@ -231,4 +241,4 @@ class FacebookGeographicTargeting implements BlobInterface
         $this->setCityAction($this->safeGet($array, self::CITY_ACTION));
         $this->setPostalAction($this->safeGet($array, self::POSTAL_ACTION));
     }
-} 
+}

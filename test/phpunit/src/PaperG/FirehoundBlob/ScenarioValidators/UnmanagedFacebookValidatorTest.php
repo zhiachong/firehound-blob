@@ -29,16 +29,13 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
                                     ->getMock();
         $mockCreative        = $this->getMockBuilder('PaperG\FirehoundBlob\Facebook\FacebookCreative')->disableOriginalConstructor()
                                     ->getMock();
+        $mockCreative->expects($this->once())
+                     ->method('isValid')
+                     ->will($this->returnValue(true));
 
         $mockAdSet->expects($this->once())
                   ->method('validate')
                   ->will($this->returnValue(true));
-        $mockCreative->expects($this->once())
-                     ->method('getObjects')
-                     ->will($this->returnValue([1, 2, 3]));
-        $mockCreative->expects($this->once())
-                     ->method('getType')
-                     ->will($this->returnValue('helloWorld'));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getAdAccountId')
                             ->will($this->returnValue('123-abc'));
@@ -79,17 +76,14 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
                   ->method('validate')
                   ->will($this->returnValue(true));
         $mockCreative->expects($this->once())
-                     ->method('getObjects')
-                     ->will($this->returnValue([1, 2, 3]));
-        $mockCreative->expects($this->once())
-                     ->method('getType')
-                     ->will($this->returnValue('helloWorld'));
+                     ->method('isValid')
+                     ->will($this->returnValue(true));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getAdAccountId')
                             ->will($this->returnValue(1123));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getPageId')
-                            ->will($this->returnValue([1,2,3]));
+                            ->will($this->returnValue([1, 2, 3]));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getAccessToken')
                             ->will($this->returnValue(["helloworld"]));
@@ -107,7 +101,10 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
                          ->will($this->returnValue($mockUnmanagedFbBlob));
 
         $results = $this->sut->isValidCreateBlob($mockScenarioBlob);
-        $this->assertEquals("Blob doesn't contain a valid ad account ID. Blob doesn't contain a valid page ID. Blob doesn't contain a valid access token. Blob doesn't contain valid status. ", $results["validationMessage"]);
+        $this->assertEquals(
+            "Blob doesn't contain a valid ad account ID. Blob doesn't contain a valid page ID. Blob doesn't contain a valid access token. Blob doesn't contain valid status. ",
+            $results["validationMessage"]
+        );
         $this->assertEquals(false, $results["validationResult"]);
     }
 
@@ -125,17 +122,14 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
                   ->method('validate')
                   ->will($this->returnValue(true));
         $mockCreative->expects($this->once())
-                     ->method('getObjects')
-                     ->will($this->returnValue([1, 2, 3]));
-        $mockCreative->expects($this->once())
-                     ->method('getType')
-                     ->will($this->returnValue('helloWorld'));
+                     ->method('isValid')
+                     ->will($this->returnValue(true));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getAdAccountId')
                             ->will($this->returnValue(1123));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getPageId')
-                            ->will($this->returnValue([1,2,3]));
+                            ->will($this->returnValue([1, 2, 3]));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getAccessToken')
                             ->will($this->returnValue(["helloworld"]));
@@ -153,7 +147,10 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
                          ->will($this->returnValue($mockUnmanagedFbBlob));
 
         $results = $this->sut->isValidUpdateBlob($mockScenarioBlob);
-        $this->assertEquals("Blob doesn't contain a valid ad account ID. Blob doesn't contain a valid page ID. Blob doesn't contain a valid access token. ", $results["validationMessage"]);
+        $this->assertEquals(
+            "Blob doesn't contain a valid ad account ID. Blob doesn't contain a valid page ID. Blob doesn't contain a valid access token. ",
+            $results["validationMessage"]
+        );
         $this->assertEquals(false, $results["validationResult"]);
     }
 }

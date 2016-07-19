@@ -82,7 +82,9 @@ class BasicInfo implements BlobInterface
      */
     public function setScenario($scenario)
     {
-        $this->scenario = $scenario;
+        if (in_array($scenario, Scenario::$validScenarios)) {
+            $this->scenario = $scenario;
+        }
     }
 
     /**
@@ -167,4 +169,4 @@ class BasicInfo implements BlobInterface
 
         return true;
     }
-} 
+}

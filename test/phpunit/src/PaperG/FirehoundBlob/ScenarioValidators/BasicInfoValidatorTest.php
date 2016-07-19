@@ -64,7 +64,7 @@ class BasicInfoValidatorTest extends \PHPUnit_Framework_TestCase
                       ->will($this->returnValue('Hello world this is a testing framework'));
         $mockBasicInfo->expects($this->once())
                       ->method('getScenario')
-                      ->will($this->returnValue('Dummy Scenario That No One Knows About'));
+                      ->will($this->returnValue(''));
 
         $results = $this->sut->isValidCreateBlob($mockScenarioBlob);
         $this->assertEquals(false, $results['validationResult']);
@@ -91,7 +91,7 @@ class BasicInfoValidatorTest extends \PHPUnit_Framework_TestCase
                       ->will($this->returnValue('Hello world this is a testing framework'));
         $mockBasicInfo->expects($this->once())
                       ->method('getScenario')
-                      ->will($this->returnValue('Dummy Scenario That No One Knows About')); // Scenario is not one of the valid scenarios
+                      ->will($this->returnValue('')); // Scenario is not one of the valid scenarios
 
         $results = $this->sut->isValidUpdateBlob($mockScenarioBlob);
         $this->assertEquals(false, $results['validationResult']);
