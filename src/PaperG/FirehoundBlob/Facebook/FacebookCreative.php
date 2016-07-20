@@ -69,6 +69,14 @@ class FacebookCreative implements BlobInterface
         return $this->type;
     }
 
+    public function isValid()
+    {
+        $creativeData = $this->getObjects();
+        $creativeType = $this->getType();
+
+        return !(empty($creativeType) || empty($creativeData));
+    }
+
     /**
      * @return array
      */
@@ -107,4 +115,4 @@ class FacebookCreative implements BlobInterface
 
         $this->objects = $objectArray;
     }
-} 
+}

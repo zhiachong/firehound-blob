@@ -10,7 +10,7 @@ class FacebookAudienceTargeting
     use Utility;
 
     const TYPE = 'type';
-    const IDS = 'ids';
+    const IDS  = 'ids';
 
     /**
      * @var string
@@ -59,6 +59,13 @@ class FacebookAudienceTargeting
         return $this->type;
     }
 
+    public function isValid()
+    {
+        return !empty($this->getType()) &&
+               !empty($this->getIds()) &&
+               is_array(($this->getIds()));
+    }
+
     /**
      * @return array
      */
@@ -66,7 +73,7 @@ class FacebookAudienceTargeting
     {
         return [
             self::TYPE => $this->type,
-            self::IDS => $this->ids
+            self::IDS  => $this->ids
         ];
     }
 
@@ -76,6 +83,6 @@ class FacebookAudienceTargeting
     public function fromArray($array)
     {
         $this->type = $this->safeGet($array, self::TYPE);
-        $this->ids = $this->safeGet($array, self::IDS);
+        $this->ids  = $this->safeGet($array, self::IDS);
     }
-} 
+}
