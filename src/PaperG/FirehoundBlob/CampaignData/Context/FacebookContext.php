@@ -2,7 +2,8 @@
 namespace PaperG\FirehoundBlob\CampaignData\Context;
 
 
-use PaperG\FirehoundBlob\Facebook\FacebookAdSet;
+
+use PaperG\ScenarioBlob\Blobs\UnmanagedFacebook\FacebookAdSet;
 
 class FacebookContext
 {
@@ -97,4 +98,4 @@ class FacebookContext
 
         $this->adSets = $adSets;
     }
-} 
+}

@@ -6,7 +6,8 @@
     },
     "autoload": {
         "psr-0" : {
-            "PaperG\\FirehoundBlob" : "src"
+            "PaperG\\FirehoundBlob" : "src",
+            "PaperG\\ScenarioBlob" : "src"
         }
     },
     "require": {

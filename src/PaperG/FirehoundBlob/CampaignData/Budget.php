@@ -2,7 +2,7 @@
 
 namespace PaperG\FirehoundBlob\CampaignData;
 
-use PaperG\FirehoundBlob\BlobInterface;
+use PaperG\ScenarioBlob\BlobInterface;
 
 class Budget implements BlobInterface
 {

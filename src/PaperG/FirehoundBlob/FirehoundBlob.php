@@ -3,11 +3,11 @@
 namespace PaperG\FirehoundBlob;
 
 use PaperG\FirehoundBlob\CampaignData\Budget;
+use PaperG\FirehoundBlob\CampaignData\Context;
 use PaperG\FirehoundBlob\CampaignData\Creative;
 use PaperG\FirehoundBlob\CampaignData\ExchangeTargeting;
 use PaperG\FirehoundBlob\CampaignData\PlatformTargeting;
 use PaperG\FirehoundBlob\CampaignData\Targeting;
-use PaperG\FirehoundBlob\CampaignData\Context;
 
 class FirehoundBlob
 {

@@ -21,7 +21,7 @@ class FacebookContextTest extends FirehoundBlobTestCase
 
     public function test_getSetAdSets_shouldReturnCorrectValues()
     {
-        $mockAdSet = $this->buildMock('\PaperG\Facebook\FacebookAdSet');
+        $mockAdSet = $this->buildMock('\PaperG\ScenarioBlob\Blobs\UnmanagedFacebook\FacebookAdSet');
         $mockAdSets = [$mockAdSet];
         $facebookContext = new FacebookContext();
         $facebookContext->setAdSets($mockAdSets);
@@ -34,7 +34,7 @@ class FacebookContextTest extends FirehoundBlobTestCase
         $mockPageID = "mockPageId";
         $mockAdAccountID = "mockAdAccountId";
         $mockAdSetArray = array("adSetId" => "bar");
-        $mockAdSet = $this->buildMock('\PaperG\FirehoundBlob\Facebook\FacebookAdSet');
+        $mockAdSet = $this->buildMock('\PaperG\ScenarioBlob\Blobs\UnmanagedFacebook\FacebookAdSet');
         $mockAdSet->expects($this->once())
             ->method('toAssociativeArray')
             ->will($this->returnValue($mockAdSetArray));
