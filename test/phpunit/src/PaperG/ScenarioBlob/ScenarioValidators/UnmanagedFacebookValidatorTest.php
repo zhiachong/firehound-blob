@@ -23,7 +23,7 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
     public function test_isValidCreateBlob_UsingAValidBlobForCreate_ReturnsTrue()
     {
         $mockScenarioBlob    = $this->getMockBuilder('PaperG\ScenarioBlob\ScenarioBlob')->disableOriginalConstructor()->getMock();
-        $mockUnmanagedFbBlob = $this->getMockBuilder('PaperG\ScenarioBlob\Blob\UnmanagedFacebook\UnmanagedFacebookBlob')
+        $mockUnmanagedFbBlob = $this->getMockBuilder('PaperG\ScenarioBlob\Blobs\UnmanagedFacebook\UnmanagedFacebookBlob')
             ->disableOriginalConstructor()
                                     ->getMock();
         $mockAdSet           = $this->getMockBuilder('PaperG\ScenarioBlob\Blobs\UnmanagedFacebook\FacebookAdSet')->disableOriginalConstructor()

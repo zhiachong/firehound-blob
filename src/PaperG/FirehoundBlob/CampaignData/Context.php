@@ -2,11 +2,12 @@
 
 namespace PaperG\FirehoundBlob\CampaignData;
 
-use PaperG\FirehoundBlob\CampaignData\Context\FacebookContext;
-//TODO: Pull these out of PlaceLocal or otherwise abstract them
 use PaperG\Common\AppNexusDataIncludeFrame;
+use PaperG\FirehoundBlob\CampaignData\Context\FacebookContext;
 use PaperG\PlaceLocal\API\AppNexus\ExchangeCampaign;
 use PaperG\PlaceLocal\Common\CampaignAudienceGroups;
+
+//TODO: Pull these out of PlaceLocal or otherwise abstract them
 
 class Context
 {

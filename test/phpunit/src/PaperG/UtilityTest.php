@@ -18,7 +18,7 @@ class UtilityTest extends \FirehoundBlobTestCase
 
     public function setUp()
     {
-        $this->sut = $this->getObjectForTrait('\PaperG\FirehoundBlob\Utility');
+        $this->sut = $this->getObjectForTrait('\PaperG\ScenarioBlob\Utility');
     }
 
     /**
@@ -37,4 +37,4 @@ class UtilityTest extends \FirehoundBlobTestCase
         $result = $this->sut->safeGet($mockArray, $mockMissingKey, $mockDefault);
         $this->assertEquals($mockDefault, $result);
     }
-} 
+}

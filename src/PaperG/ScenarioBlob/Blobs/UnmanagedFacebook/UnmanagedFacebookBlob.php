@@ -8,8 +8,8 @@
 
 namespace PaperG\ScenarioBlob\Blobs\UnmanagedFacebook;
 
-use PaperG\ScenarioBlob\BlobInterface;
 use PaperG\FirehoundBlob\CampaignData\Budget;
+use PaperG\ScenarioBlob\BlobInterface;
 use PaperG\ScenarioBlob\Blobs\UnmanagedFacebook\Targeting\FacebookAudienceTargeting;
 use PaperG\ScenarioBlob\Blobs\UnmanagedFacebook\Targeting\FacebookDemographicTargeting;
 use PaperG\ScenarioBlob\Blobs\UnmanagedFacebook\Targeting\FacebookGeographicTargeting;

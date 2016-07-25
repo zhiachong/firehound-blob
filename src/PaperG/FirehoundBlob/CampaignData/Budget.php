@@ -2,9 +2,7 @@
 
 namespace PaperG\FirehoundBlob\CampaignData;
 
-use PaperG\ScenarioBlob\BlobInterface;
-
-class Budget implements BlobInterface
+class Budget
 {
     CONST DEFAULT_KEY = "default";
     CONST MOBILE_KEY  = "mobile";
