@@ -1,6 +1,6 @@
 <?php
 
-namespace PaperG\FirehoundBlob\Facebook\Creative;
+namespace PaperG\FirehoundBlob\Facebook\CreativeData;
 
 use PaperG\FirehoundBlob\Facebook\FacebookCreativeData;
 use PaperG\FirehoundBlob\Utility;

@@ -1,15 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: allentsai
- * Date: 7/6/16
- * Time: 5:19 PM
- */
 
 namespace PaperG\FirehoundBlob\Facebook;
 
 
 use PaperG\FirehoundBlob\BlobInterface;
+use PaperG\FirehoundBlob\Facebook\CreativeData\FacebookCarouselCreativeData;
 use PaperG\FirehoundBlob\Utility;
 
 class FacebookCreative implements BlobInterface
@@ -38,7 +33,7 @@ class FacebookCreative implements BlobInterface
     }
 
     /**
-     * @param FacebookCreativeData[] $objects
+     * @param FacebookCreativeData[]|FacebookCarouselCreativeData[] $objects
      */
     public function setObjects($objects)
     {
@@ -46,7 +41,7 @@ class FacebookCreative implements BlobInterface
     }
 
     /**
-     * @return FacebookCreativeData[]
+     * @return FacebookCreativeData[]|FacebookCarouselCreativeData[]
      */
     public function getObjects()
     {
@@ -109,10 +104,14 @@ class FacebookCreative implements BlobInterface
         $objects = $this->safeGet($array, self::OBJECTS, []);
         $objectArray = [];
         foreach ($objects as $object) {
-
-            $objectArray[] = new FacebookCreativeData($object); //versioned, might need builder
+            if ($this->type == 'carousel') {
+                $objectArray[] = new FacebookCarouselCreativeData($object);
+            } else {
+                $objectArray[] = new FacebookCreativeData($object); //versioned, might need builder
+            }
         }
 
         $this->objects = $objectArray;
     }
+
 }
