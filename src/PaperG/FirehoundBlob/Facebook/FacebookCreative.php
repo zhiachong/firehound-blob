@@ -33,7 +33,7 @@ class FacebookCreative implements BlobInterface
     }
 
     /**
-     * @param FacebookCreativeData[] $objects
+     * @param FacebookCreativeData[]|FacebookCarouselCreativeData[] $objects
      */
     public function setObjects($objects)
     {
@@ -41,7 +41,7 @@ class FacebookCreative implements BlobInterface
     }
 
     /**
-     * @return FacebookCreativeData[]
+     * @return FacebookCreativeData[]|FacebookCarouselCreativeData[]
      */
     public function getObjects()
     {
