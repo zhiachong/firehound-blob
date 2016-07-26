@@ -3,7 +3,7 @@
 namespace PaperG\Common\Test\Facebook\Creative;
 
 
-use PaperG\FirehoundBlob\Facebook\Creative\FacebookCarouselCreativeData;
+use PaperG\FirehoundBlob\Facebook\CreativeData\FacebookCarouselCreativeData;
 use PaperG\FirehoundBlob\Facebook\FacebookCreativeData;
 
 class FacebookCarouselCreativeDataTest extends \FirehoundBlobTestCase
