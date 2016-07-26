@@ -20,6 +20,11 @@ class FacebookCreative implements BlobInterface
     const OBJECTS = 'objects';
     const VERSION = 'version';
 
+    const LINK_TYPE = 'link';
+    const CAROUSEL_TYPE = 'carousel';
+
+    public static $validAdTypes = [self::LINK_TYPE, self::CAROUSEL_TYPE];
+
     const CURRENT_VERSION = 1;
 
     /**
@@ -73,8 +78,8 @@ class FacebookCreative implements BlobInterface
     {
         $creativeData = $this->getObjects();
         $creativeType = $this->getType();
-
-        return !(empty($creativeType) || empty($creativeData));
+        
+        return !empty($creativeType) && !empty($creativeData) && in_array($creativeType, self::$validAdTypes);
     }
 
     /**
