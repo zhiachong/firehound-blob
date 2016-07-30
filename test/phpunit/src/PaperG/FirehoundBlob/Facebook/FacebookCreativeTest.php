@@ -32,4 +32,20 @@ class FacebookCreativeTest extends \FirehoundBlobTestCase
         $newObject = new FacebookCreative($array);
         $this->assertEquals($this->sut, $newObject);
     }
+
+    public function test_isValid_WithValidType_ReturnsTrue()
+    {
+        $dummyType = 'link';
+        $this->sut->setType($dummyType);
+        $this->sut->setObjects([1,2,3,4]);
+        $this->assertEquals(true, $this->sut->isValid());
+    }
+
+    public function test_isValid_WithInvalidType_ReturnsFalse()
+    {
+        $dummyType = 'some_link_no_one_knows';
+        $this->sut->setType($dummyType);
+        $this->sut->setObjects([1,2,3,4]);
+        $this->assertEquals(false, $this->sut->isValid());
+    }
 } 
