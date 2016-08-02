@@ -8,7 +8,6 @@
 
 namespace PaperG\FirehoundBlob\ScenarioValidators;
 
-use PaperG\FirehoundBlob\Scenario;
 use PaperG\FirehoundBlob\ScenarioBlob;
 
 class BasicInfoValidator implements ScenarioValidator
@@ -18,35 +17,35 @@ class BasicInfoValidator implements ScenarioValidator
      *
      * @param $blob ScenarioBlob
      *
-     * @return array Example: {"validationResult": true , "validationMessage": "status is not filled" }
+     * @return ValidationResult
      */
     public function isValidCreateBlob($blob)
     {
         // Basic info should contain these information regardless
         // if it's a create or update request
-        $validationResults = true;
+        $validationResult = true;
         $validationMessage = '';
 
         $basicInfo = $blob->getBasicInfo();
         if (empty($basicInfo)) {
-            return [self::VALIDATION_RESULT => false, self::VALIDATION_MESSAGE => "Basic info is not filled. "];
+            return new ValidationResult(false, "Basic info is not filled. ");
         }
 
         $name = $basicInfo->getName();
         if (empty($name) || !is_string($name)) {
-            $validationResults = false;
+            $validationResult = false;
             $validationMessage .= "Basic info's name is not a valid string. ";
         }
 
         $uuid = $basicInfo->getUuid();
         if (empty($uuid) || !is_string($uuid)) {
-            $validationResults = false;
+            $validationResult = false;
             $validationMessage .= "Basic info's UUID is not a valid string. ";
         }
 
         $metadata = $basicInfo->getMetadata();
         if (!empty($metadata) && !is_string($metadata)) {
-            $validationResults = false;
+            $validationResult = false;
             $validationMessage .= "Basic info's metadata is not a valid string. ";
         }
 
@@ -54,11 +53,11 @@ class BasicInfoValidator implements ScenarioValidator
         if (empty($scenario) ||
             !is_string($scenario)
         ) {
-            $validationResults = false;
+            $validationResult = false;
             $validationMessage .= "Basic info does not contain valid scenario. ";
         }
 
-        return [self::VALIDATION_RESULT => $validationResults, self::VALIDATION_MESSAGE => $validationMessage];
+        return new ValidationResult($validationResult, $validationMessage);
     }
 
     /**
@@ -66,7 +65,7 @@ class BasicInfoValidator implements ScenarioValidator
      *
      * @param $blob ScenarioBlob
      *
-     * @return array Example: {"validationResult": true , "validationMessage": "status is not filled" }
+     * @return ValidationResult
      */
     public function isValidUpdateBlob($blob)
     {

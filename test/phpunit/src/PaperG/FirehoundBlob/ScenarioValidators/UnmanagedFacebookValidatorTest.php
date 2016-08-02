@@ -13,6 +13,9 @@ use PaperG\FirehoundBlob\ScenarioValidators\UnmanagedFacebookValidator;
 
 class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var UnmanagedFacebookValidator
+     */
     private $sut;
 
     public function setup()
@@ -59,7 +62,7 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
                          ->will($this->returnValue($mockUnmanagedFbBlob));
 
         $results = $this->sut->isValidCreateBlob($mockScenarioBlob);
-        $this->assertEquals(true, $results["validationResult"]);
+        $this->assertEquals(true, $results->getResult());
     }
 
     public function test_isValidCreateBlob_UsingInvalidBlobForCreate_ReturnsFalseAndErrorMessage()
@@ -103,9 +106,9 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
         $results = $this->sut->isValidCreateBlob($mockScenarioBlob);
         $this->assertEquals(
             "Blob doesn't contain a valid ad account ID. Blob doesn't contain a valid page ID. Blob doesn't contain a valid access token. Blob doesn't contain valid status. ",
-            $results["validationMessage"]
+            $results->getMessage()
         );
-        $this->assertEquals(false, $results["validationResult"]);
+        $this->assertEquals(false, $results->getResult());
     }
 
     public function test_isValidUpdateBlob_UsingInvalidBlobForUpdate_ReturnsFalseAndErrorMessage()
@@ -149,9 +152,9 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
         $results = $this->sut->isValidUpdateBlob($mockScenarioBlob);
         $this->assertEquals(
             "Blob doesn't contain a valid ad account ID. Blob doesn't contain a valid page ID. Blob doesn't contain a valid access token. ",
-            $results["validationMessage"]
+            $results->getMessage()
         );
-        $this->assertEquals(false, $results["validationResult"]);
+        $this->assertEquals(false, $results->getResult());
     }
 }
 
