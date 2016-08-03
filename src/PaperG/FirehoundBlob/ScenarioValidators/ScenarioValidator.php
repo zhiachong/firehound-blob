@@ -8,6 +8,7 @@
 
 namespace PaperG\FirehoundBlob\ScenarioValidators;
 
+use PaperG\FirehoundBlob\BlobInterface;
 use PaperG\FirehoundBlob\ScenarioBlob;
 
 interface ScenarioValidator {
@@ -17,17 +18,17 @@ interface ScenarioValidator {
 
     /**
      * Determines if a create blob is valid
-     * @param $blob ScenarioBlob
+     * @param $blob BlobInterface
      *
-     * @return array Example: {"validationResult": true , "validationMessage": "status is not filled" }
+     * @return ValidationResult
      */
     public function isValidCreateBlob($blob);
 
     /**
      * Determines if an update blob is valid
-     * @param $blob ScenarioBlob
+     * @param $blob BlobInterface
      *
-     * @return array Example: {"validationResult": true , "validationMessage": "status is not filled" }
+     * @return ValidationResult
      */
     public function isValidUpdateBlob($blob);
 }

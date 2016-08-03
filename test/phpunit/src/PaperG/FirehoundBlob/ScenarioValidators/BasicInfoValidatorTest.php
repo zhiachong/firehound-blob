@@ -11,6 +11,9 @@ use PaperG\FirehoundBlob\ScenarioValidators\BasicInfoValidator;
 
 class BasicInfoValidatorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var BasicInfoValidator
+     */
     private $sut;
 
     public function setUp()
@@ -41,7 +44,7 @@ class BasicInfoValidatorTest extends \PHPUnit_Framework_TestCase
                       ->will($this->returnValue('AppNexus-Desktop'));
 
         $results = $this->sut->isValidCreateBlob($mockScenarioBlob);
-        $this->assertEquals(true, $results['validationResult']);
+        $this->assertEquals(true, $results->getResult());
     }
 
     public function test_isValidCreateBlob_WithMissingScenarioAndIsCreateRequest_ReturnsFalse()
@@ -67,8 +70,8 @@ class BasicInfoValidatorTest extends \PHPUnit_Framework_TestCase
                       ->will($this->returnValue(''));
 
         $results = $this->sut->isValidCreateBlob($mockScenarioBlob);
-        $this->assertEquals(false, $results['validationResult']);
-        $this->assertEquals("Basic info does not contain valid scenario. ", $results["validationMessage"]);
+        $this->assertEquals(false, $results->getResult());
+        $this->assertEquals("Basic info does not contain valid scenario. ", $results->getMessage());
     }
 
     public function test_isValidUpdateBlob_WithUpdateRequest_ReturnsFalse()
@@ -94,10 +97,10 @@ class BasicInfoValidatorTest extends \PHPUnit_Framework_TestCase
                       ->will($this->returnValue('')); // Scenario is not one of the valid scenarios
 
         $results = $this->sut->isValidUpdateBlob($mockScenarioBlob);
-        $this->assertEquals(false, $results['validationResult']);
+        $this->assertEquals(false, $results->getResult());
         $this->assertEquals(
             "Basic info's name is not a valid string. Basic info's UUID is not a valid string. Basic info does not contain valid scenario. ",
-            $results["validationMessage"]
+            $results->getMessage()
         );
     }
 

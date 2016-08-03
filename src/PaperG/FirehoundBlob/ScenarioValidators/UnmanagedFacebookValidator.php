@@ -20,8 +20,8 @@ class UnmanagedFacebookValidator implements ScenarioValidator
     private function validateRequiredCreateFields(UnmanagedFacebookBlob $facebookBlob)
     {
         $coreFieldsValidationResults = $this->validateCoreRequiredFields($facebookBlob);
-        $validationResult = $coreFieldsValidationResults[self::VALIDATION_RESULT];
-        $validationMessage = $coreFieldsValidationResults[self::VALIDATION_MESSAGE];
+        $validationResult = $coreFieldsValidationResults->getResult();
+        $validationMessage = $coreFieldsValidationResults->getMessage();
 
         $status = $facebookBlob->getStatus();
         if (empty($status) || !$this->validateStatus($status)) {
@@ -41,14 +41,14 @@ class UnmanagedFacebookValidator implements ScenarioValidator
             $validationResult = false;
         }
 
-        return [self::VALIDATION_RESULT => $validationResult, self::VALIDATION_MESSAGE => $validationMessage];
+        return new ValidationResult($validationResult, $validationMessage);
     }
 
     private function validateRequiredUpdateFields(UnmanagedFacebookBlob $facebookBlob)
     {
         $coreFieldsValidationResults = $this->validateCoreRequiredFields($facebookBlob);
-        $validationResult = $coreFieldsValidationResults[self::VALIDATION_RESULT];
-        $validationMessage = $coreFieldsValidationResults[self::VALIDATION_MESSAGE];
+        $validationResult = $coreFieldsValidationResults->getResult();
+        $validationMessage = $coreFieldsValidationResults->getMessage();
 
         $status = $facebookBlob->getStatus();
         if (!empty($status) && !$this->validateStatus($status)) {
@@ -68,7 +68,7 @@ class UnmanagedFacebookValidator implements ScenarioValidator
             $validationResult = false;
         }
 
-        return [self::VALIDATION_RESULT => $validationResult, self::VALIDATION_MESSAGE => $validationMessage];
+        return new ValidationResult($validationResult, $validationMessage);
     }
 
     private function validateCoreRequiredFields(UnmanagedFacebookBlob $facebookBlob)
@@ -94,17 +94,14 @@ class UnmanagedFacebookValidator implements ScenarioValidator
             $validationResult = false;
         }
 
-        return [
-            self::VALIDATION_RESULT  => $validationResult,
-            self::VALIDATION_MESSAGE => $validationMessage
-        ];
+        return new ValidationResult($validationResult, $validationMessage);
     }
 
     private function validateOptionalFields(UnmanagedFacebookBlob $facebookBlob)
     {
         $validateTargeting = $this->validateTargeting($facebookBlob);
-        $validationResult = $validateTargeting[self::VALIDATION_RESULT];
-        $validationMessage = $validateTargeting[self::VALIDATION_MESSAGE];
+        $validationResult = $validateTargeting->getResult();
+        $validationMessage = $validateTargeting->getMessage();
 
         $startDate = $facebookBlob->getStartDate();
         if (!empty($startDate) && !is_numeric($startDate)) {
@@ -124,7 +121,7 @@ class UnmanagedFacebookValidator implements ScenarioValidator
             $validationResult = false;
         }
 
-        return [self::VALIDATION_RESULT => $validationResult, self::VALIDATION_MESSAGE => $validationMessage];
+        return new ValidationResult($validationResult, $validationMessage);
     }
 
     private function validateTargeting(UnmanagedFacebookBlob $facebookBlob)
@@ -150,7 +147,7 @@ class UnmanagedFacebookValidator implements ScenarioValidator
             $validationResult = false;
         }
 
-        return [self::VALIDATION_RESULT => $validationResult, self::VALIDATION_MESSAGE => $validationMessage];
+        return new ValidationResult($validationResult, $validationMessage);
     }
 
     private function validateStatus($status) {
@@ -199,7 +196,8 @@ class UnmanagedFacebookValidator implements ScenarioValidator
         $facebookBlob = $blob->getBlob();
 
         if (empty($facebookBlob)) {
-            return [self::VALIDATION_RESULT => false, self::VALIDATION_MESSAGE => "Facebook unmanaged blob is empty. "];
+
+            return new ValidationResult(false, "Facebook unmanaged blob is empty.");
         }
 
         $validateResults = ($isCreate) ?
@@ -207,18 +205,17 @@ class UnmanagedFacebookValidator implements ScenarioValidator
             $this->validateRequiredUpdateFields($facebookBlob);
 
         $optionalFieldsValidationResults = $this->validateOptionalFields($facebookBlob);
+        $validationResult = $validateResults->getResult() && $optionalFieldsValidationResults->getResult();
+        $validationMessage = $validateResults->getMessage() . $optionalFieldsValidationResults->getMessage();
 
-        return [
-            self::VALIDATION_RESULT  => $validateResults[self::VALIDATION_RESULT] && $optionalFieldsValidationResults[self::VALIDATION_RESULT],
-            self::VALIDATION_MESSAGE => $validateResults[self::VALIDATION_MESSAGE] . $optionalFieldsValidationResults[self::VALIDATION_MESSAGE]
-        ];
+        return new ValidationResult($validationResult, $validationMessage);
     }
     /**
      * Determines if a create blob is valid
      *
      * @param $blob ScenarioBlob
      *
-     * @return array Example: {"validationResult": true , "validationMessage": "status is not filled" }
+     * @return ValidationResult
      */
     public function isValidCreateBlob($blob)
     {
@@ -230,7 +227,7 @@ class UnmanagedFacebookValidator implements ScenarioValidator
      *
      * @param $blob ScenarioBlob
      *
-     * @return array Example: {"validationResult": true , "validationMessage": "status is not filled" }
+     * @return ValidationResult
      */
     public function isValidUpdateBlob($blob)
     {
