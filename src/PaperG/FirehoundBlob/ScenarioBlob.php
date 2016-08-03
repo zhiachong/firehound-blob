@@ -3,6 +3,7 @@
 namespace PaperG\FirehoundBlob;
 
 
+use PaperG\FirehoundBlob\Dcm\UnmanagedDcmBlob;
 use PaperG\FirehoundBlob\Facebook\UnmanagedFacebookBlob;
 
 class ScenarioBlob implements BlobInterface
@@ -69,6 +70,9 @@ class ScenarioBlob implements BlobInterface
         switch ($scenario) {
             case Scenario::FB_UNMANAGED:
                 $this->blob = new UnmanagedFacebookBlob($blobArray);
+                break;
+            case Scenario::DCM_UNMANAGED:
+                $this->blob = new UnmanagedDcmBlob($blobArray);
                 break;
             default:
                 break;
