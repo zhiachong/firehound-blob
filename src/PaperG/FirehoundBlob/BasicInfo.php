@@ -62,6 +62,15 @@ class BasicInfo implements BlobInterface
     }
 
     /**
+    * @param string $message
+    */
+    public function appendMetadata($message)
+    {
+        $metadata = $this->getMetadata();
+        $this->setMetadata($metadata . $message);
+    }
+
+    /**
      * @param string $name
      */
     public function setName($name)

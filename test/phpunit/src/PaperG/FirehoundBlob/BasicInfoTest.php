@@ -46,4 +46,14 @@ class BasicInfoTest extends \FirehoundBlobTestCase
 
         $this->assertEquals($this->sut, $newBlob);
     }
+
+    public function test_appendMetadata()
+    {
+        $currentMetadata = 'hello-';
+        $newMessage = 'newMessage';
+
+        $this->sut->setMetadata($currentMetadata);
+        $this->sut->appendMetadata($newMessage);
+        $this->assertEquals($currentMetadata . $newMessage, $this->sut->getMetadata());
+    }
 } 
