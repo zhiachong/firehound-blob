@@ -18,7 +18,7 @@ class UnmanagedDcmBlobValidator implements ScenarioValidator
 
     /**
      * @param UnmanagedDcmBlob $blob
-     * @return array|void
+     * @return ValidationResult
      */
     public function isValidCreateBlob($blob)
     {
@@ -43,7 +43,7 @@ class UnmanagedDcmBlobValidator implements ScenarioValidator
 
     /**
      * @param UnmanagedDcmBlob $blob
-     * @return array|void
+     * @return ValidationResult
      */
     public function isValidUpdateBlob($blob)
     {
@@ -64,6 +64,10 @@ class UnmanagedDcmBlobValidator implements ScenarioValidator
         return new ValidationResult($valid, implode(' ', $messages));
     }
 
+    /**
+     * @param UnmanagedDcmBlob $blob
+     * @return ValidationResult
+     */
     private function isValid(UnmanagedDcmBlob $blob) {
         $valid = true;
         $messages = [];
