@@ -11,11 +11,11 @@ class DcmCreativeAsset
 
     const UUID = 'uuid';
     const AD_TAG = 'adTag';
+    const NAME  = 'name';
     const IMAGE_URL = 'imageUrl';
     const WIDTH = 'width';
     const HEIGHT = 'height';
-    const ACTIVE = 'active';
-    const ARCHIVED = 'archived';
+    const PLATFORM = 'platform';
 
     /**
      * @var string
@@ -43,14 +43,14 @@ class DcmCreativeAsset
     private $height;
 
     /**
-     * @var bool
+     * @var string
      */
-    private $active;
+    private $platform;
 
     /**
-     * @var bool
+     * @var string
      */
-    private $archived;
+    private $name;
 
     public function __construct($array = [])
     {
@@ -61,40 +61,40 @@ class DcmCreativeAsset
     {
         return [
             self::UUID => $this->uuid,
+            self::NAME => $this->name,
             self::AD_TAG => $this->adTag,
             self::IMAGE_URL => $this->imageUrl,
             self::WIDTH => $this->width,
             self::HEIGHT => $this->height,
-            self::ACTIVE => $this->active,
-            self::ARCHIVED => $this->archived,
+            self::PLATFORM => $this->platform
         ];
     }
 
     public function fromArray($array)
     {
         $this->uuid = $this->safeGet($array, self::UUID);
+        $this->name = $this->safeGet($array, self::NAME);
         $this->adTag = $this->safeGet($array, self::AD_TAG);
         $this->imageUrl = $this->safeGet($array, self::IMAGE_URL);
         $this->width = $this->safeGet($array, self::WIDTH);
         $this->height = $this->safeGet($array, self::HEIGHT);
-        $this->active = $this->safeGet($array, self::ACTIVE);
-        $this->archived = $this->safeGet($array, self::ARCHIVED);
+        $this->platform = $this->safeGet($array, self::PLATFORM);
     }
 
     /**
-     * @param boolean $active
+     * @param string $name
      */
-    public function setActive($active)
+    public function setName($name)
     {
-        $this->active = $active;
+        $this->name = $name;
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function isActive()
+    public function getName()
     {
-        return $this->active;
+        return $this->name;
     }
 
     /**
@@ -111,22 +111,6 @@ class DcmCreativeAsset
     public function getAdTag()
     {
         return $this->adTag;
-    }
-
-    /**
-     * @param boolean $archived
-     */
-    public function setArchived($archived)
-    {
-        $this->archived = $archived;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isArchived()
-    {
-        return $this->archived;
     }
 
     /**
@@ -191,5 +175,21 @@ class DcmCreativeAsset
     public function getWidth()
     {
         return $this->width;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlatform()
+    {
+        return $this->platform;
+    }
+
+    /**
+     * @param $platform
+     */
+    public function setPlatform($platform)
+    {
+        $this->platform = $platform;
     }
 } 
