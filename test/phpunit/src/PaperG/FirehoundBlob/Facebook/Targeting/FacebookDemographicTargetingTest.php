@@ -28,4 +28,40 @@ class FacebookDemographicTargetingTest extends \FirehoundBlobTestCase
 
         $this->assertEquals($mockGender, $new->getGender());
     }
+
+    public function test_isValid_AgeWithinRange_ReturnsTrue()
+    {
+        $mockMinAge = 20;
+        $mockMaxAge = 50;
+
+        $this->sut->setMinAge($mockMinAge);
+        $this->sut->setMaxAge($mockMaxAge);
+
+        $actual = $this->sut->isValid();
+        $this->assertEquals(true, $actual);
+    }
+
+    public function test_isValid_OverMaxAge_ReturnsFalse()
+    {
+        $mockMinAge = 20;
+        $mockMaxAge = 75;
+
+        $this->sut->setMinAge($mockMinAge);
+        $this->sut->setMaxAge($mockMaxAge);
+
+        $actual = $this->sut->isValid();
+        $this->assertEquals(false, $actual);
+    }
+
+    public function test_isValid_UnderMinAge_ReturnsFalse()
+    {
+        $mockMinAge = 15;
+        $mockMaxAge = 65;
+
+        $this->sut->setMinAge($mockMinAge);
+        $this->sut->setMaxAge($mockMaxAge);
+
+        $actual = $this->sut->isValid();
+        $this->assertEquals(false, $actual);
+    }
 } 

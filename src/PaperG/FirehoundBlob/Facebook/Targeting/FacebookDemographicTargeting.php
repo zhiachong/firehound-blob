@@ -87,7 +87,7 @@ class FacebookDemographicTargeting implements BlobInterface
 
     public function isValid()
     {
-        return $this->getMinAge >= 18 && $this->getMaxAge <= 65;
+        return $this->getMinAge() >= 18 && $this->getMaxAge() <= 65;
     }
 
     /**
@@ -107,7 +107,7 @@ class FacebookDemographicTargeting implements BlobInterface
      */
     public function fromArray($array)
     {
-        $this->maxAge = $this->safeGet($array, self::MAX_AGE);
+        $this->maxAge = $this->safeGet($array, self::MAX_AGE, 65);
         $this->minAge = $this->safeGet($array, self::MIN_AGE, 18);
         $this->gender = $this->safeGet($array, self::GENDER);
     }
