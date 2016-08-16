@@ -381,12 +381,12 @@ class UnmanagedFacebookBlob implements BlobInterface
         $this->accessToken          = $this->safeGet($array, self::ACCESS_TOKEN);
 
         $creatives = $this->safeGet($array, self::CREATIVES, []);
+        $this->creatives = [];
         foreach ($creatives as $creative) {
             $fbCreative = new FacebookCreative();
             $fbCreative->fromArray($creative);
-            $creatives[] = $fbCreative;
+            $this->creatives[] = $fbCreative;
         }
-        $this->creatives = $creatives;
 
         $adSetResults               = [];
         $adSets                     = $this->safeGet($array, self::AD_SETS, []);
