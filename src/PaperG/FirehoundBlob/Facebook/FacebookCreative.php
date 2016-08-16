@@ -2,7 +2,6 @@
 
 namespace PaperG\FirehoundBlob\Facebook;
 
-
 use PaperG\FirehoundBlob\BlobInterface;
 use PaperG\FirehoundBlob\Facebook\CreativeData\FacebookCarouselCreativeData;
 use PaperG\FirehoundBlob\Utility;
@@ -11,12 +10,12 @@ class FacebookCreative implements BlobInterface
 {
     use Utility;
 
-    const TYPE = 'type';
-    const OBJECTS = 'objects';
-    const VERSION = 'version';
-
-    const LINK_TYPE = 'link';
-    const CAROUSEL_TYPE = 'carousel';
+    const TYPE              = 'type';
+    const CHILD_ATTACHMENTS = 'child_attachments';
+    const PRIMARY           = 'primary';
+    const VERSION           = 'version';
+    const LINK_TYPE         = 'link';
+    const CAROUSEL_TYPE     = 'carousel';
 
     public static $validAdTypes = [self::LINK_TYPE, self::CAROUSEL_TYPE];
 
@@ -28,29 +27,18 @@ class FacebookCreative implements BlobInterface
     private $type;
 
     /**
+     * @var FacebookCreativeData
+     */
+    private $primary;
+
+    /**
      * @var FacebookCreativeData[]
      */
-    private $objects;
+    private $childAttachments;
 
     public function __construct($array = null)
     {
         $this->fromArray($array);
-    }
-
-    /**
-     * @param FacebookCreativeData[]|FacebookCarouselCreativeData[] $objects
-     */
-    public function setObjects($objects)
-    {
-        $this->objects = $objects;
-    }
-
-    /**
-     * @return FacebookCreativeData[]|FacebookCarouselCreativeData[]
-     */
-    public function getObjects()
-    {
-        return $this->objects;
     }
 
     /**
@@ -69,11 +57,43 @@ class FacebookCreative implements BlobInterface
         return $this->type;
     }
 
+    /**
+     * @return FacebookCreativeData[]
+     */
+    public function getChildAttachments()
+    {
+        return $this->childAttachments;
+    }
+
+    /**
+     * @param FacebookCreativeData[] $childAttachments
+     */
+    public function setChildAttachments($childAttachments)
+    {
+        $this->childAttachments = $childAttachments;
+    }
+
+    /**
+     * @return FacebookCreativeData
+     */
+    public function getPrimary()
+    {
+        return $this->primary;
+    }
+
+    /**
+     * @param FacebookCreativeData $primary
+     */
+    public function setPrimary($primary)
+    {
+        $this->primary = $primary;
+    }
+
     public function isValid()
     {
-        $creativeData = $this->getObjects();
+        $creativeData = $this->getPrimary();
         $creativeType = $this->getType();
-        
+
         return !empty($creativeType) && !empty($creativeData) && in_array($creativeType, self::$validAdTypes);
     }
 
@@ -82,20 +102,21 @@ class FacebookCreative implements BlobInterface
      */
     public function toArray()
     {
-        $array =  [
-            self::TYPE => $this->type,
-            self::VERSION => self::CURRENT_VERSION
+        $array = [
+            self::TYPE    => $this->type,
+            self::VERSION => self::CURRENT_VERSION,
+            self::PRIMARY => $this->getPrimary()->toArray()
         ];
 
-        $objects = null;
-        if (!empty($this->objects)) {
-            $objects = [];
-            foreach ($this->objects as $creativeData) {
-                $objects[] = $creativeData->toArray();
+        $childAttachmentsArray = null;
+        $childAttachments      = $this->getChildAttachments();
+        if (!empty($childAttachments)) {
+            foreach ($childAttachments as $creative) {
+                $childAttachmentsArray[] = $creative->toArray();
             }
         }
 
-        $array[self::OBJECTS] = $objects;
+        $array[self::CHILD_ATTACHMENTS] = $childAttachmentsArray;
 
         return $array;
     }
@@ -105,18 +126,26 @@ class FacebookCreative implements BlobInterface
      */
     public function fromArray($array)
     {
-        $this->type = $this->safeGet($array, self::TYPE);
-        $objects = $this->safeGet($array, self::OBJECTS, []);
-        $objectArray = [];
-        foreach ($objects as $object) {
-            if ($this->type == 'carousel') {
-                $objectArray[] = new FacebookCarouselCreativeData($object);
-            } else {
-                $objectArray[] = new FacebookCreativeData($object); //versioned, might need builder
-            }
+        $this->type       = $this->safeGet($array, self::TYPE);
+        $primary    = $this->safeGet($array, self::PRIMARY);
+        $childAttachments = $this->safeGet($array, self::CHILD_ATTACHMENTS, []);
+
+        $this->primary = $this->createCreativeData($primary);
+
+        $objectsArray = [];
+        foreach ($childAttachments as $object) {
+            $objectsArray[]  = $this->createCreativeData($object);
         }
 
-        $this->objects = $objectArray;
+        $this->childAttachments = $objectsArray;
     }
 
+    private function createCreativeData($creative)
+    {
+        if ($this->type == self::CAROUSEL_TYPE) {
+            return new FacebookCarouselCreativeData($creative);
+        }
+        
+        return new FacebookCreativeData($creative);
+    }
 }

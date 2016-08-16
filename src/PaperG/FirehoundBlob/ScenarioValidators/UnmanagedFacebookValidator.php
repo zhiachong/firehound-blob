@@ -35,9 +35,19 @@ class UnmanagedFacebookValidator implements ScenarioValidator
             $validationResult = false;
         }
 
-        $creative = $facebookBlob->getCreative();
-        if (empty($creative) || !$creative->isValid()) {
-            $validationMessage .= "Blob doesn't contain creative or the creative is not valid. ";
+        $creatives = $facebookBlob->getCreatives();
+        $isValid = true;
+        if (!empty($creatives)) {
+            foreach ($creatives as $creative) {
+                if (!$creative->isValid()) {
+                    $isValid = false;
+                    break;
+                }
+            }
+        }
+
+        if (empty($creatives) || !$isValid) {
+            $validationMessage .= "Blob doesn't contain any creative or the creatives are not valid. ";
             $validationResult = false;
         }
 
@@ -62,9 +72,19 @@ class UnmanagedFacebookValidator implements ScenarioValidator
             $validationResult = false;
         }
 
-        $creative = $facebookBlob->getCreative();
-        if (!empty($creative) && !$creative->isValid()) {
-            $validationMessage .= "Blob doesn't contain creative or the creative is not valid. ";
+        $creatives = $facebookBlob->getCreatives();
+        $isValid = true;
+        if (!empty($creatives)) {
+            foreach ($creatives as $creative) {
+                if (!$creative->isValid()) {
+                    $isValid = false;
+                    break;
+                }
+            }
+        }
+
+        if (!$isValid) {
+            $validationMessage .= "Blob doesn't contain any creative or the creatives are not valid. ";
             $validationResult = false;
         }
 

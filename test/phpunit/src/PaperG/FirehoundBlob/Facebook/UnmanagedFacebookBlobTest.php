@@ -46,4 +46,4 @@ class UnmanagedFacebookBlobTest extends \FirehoundBlobTestCase
 
         $this->assertEquals($this->sut, $new);
     }
-} 
+}
