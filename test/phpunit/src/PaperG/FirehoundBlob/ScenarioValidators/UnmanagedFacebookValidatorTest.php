@@ -52,8 +52,8 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
                             ->method('getStatus')
                             ->will($this->returnValue('active'));
         $mockUnmanagedFbBlob->expects($this->once())
-                            ->method('getCreative')
-                            ->will($this->returnValue($mockCreative));
+                            ->method('getCreatives')
+                            ->will($this->returnValue([$mockCreative]));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getAdSets')
                             ->will($this->returnValue([$mockAdSet]));
@@ -94,8 +94,8 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
                             ->method('getStatus')
                             ->will($this->returnValue(''));
         $mockUnmanagedFbBlob->expects($this->once())
-                            ->method('getCreative')
-                            ->will($this->returnValue($mockCreative));
+                            ->method('getCreatives')
+                            ->will($this->returnValue([$mockCreative]));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getAdSets')
                             ->will($this->returnValue([$mockAdSet]));
@@ -140,8 +140,8 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
                             ->method('getStatus')
                             ->will($this->returnValue(''));
         $mockUnmanagedFbBlob->expects($this->once())
-                            ->method('getCreative')
-                            ->will($this->returnValue($mockCreative));
+                            ->method('getCreatives')
+                            ->will($this->returnValue([$mockCreative]));
         $mockUnmanagedFbBlob->expects($this->once())
                             ->method('getAdSets')
                             ->will($this->returnValue([$mockAdSet]));

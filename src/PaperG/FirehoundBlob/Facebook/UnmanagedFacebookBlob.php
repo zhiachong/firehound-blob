@@ -30,7 +30,7 @@ class UnmanagedFacebookBlob implements BlobInterface
     const PAGE_ID = 'pageId';
     const ACCESS_TOKEN = 'accessToken';
     const AD_SETS = 'adSets';
-    const CREATIVE = 'creative';
+    const CREATIVES = 'creatives';
     const BUDGET = 'budget';
     const VERSION = 'version';
 
@@ -92,9 +92,9 @@ class UnmanagedFacebookBlob implements BlobInterface
     private $adSets;
 
     /**
-     * @var FacebookCreative
+     * @var FacebookCreative[]
      */
-    private $creative;
+    private $creatives;
 
     /**
      * @var Budget
@@ -171,19 +171,19 @@ class UnmanagedFacebookBlob implements BlobInterface
     }
 
     /**
-     * @param FacebookCreative $creative
+     * @param FacebookCreative[] $creatives
      */
-    public function setCreative($creative)
+    public function setCreatives($creatives)
     {
-        $this->creative = $creative;
+        $this->creatives = $creatives;
     }
 
     /**
-     * @return FacebookCreative
+     * @return FacebookCreative[]
      */
-    public function getCreative()
+    public function getCreatives()
     {
-        return $this->creative;
+        return $this->creatives;
     }
 
     /**
@@ -333,7 +333,6 @@ class UnmanagedFacebookBlob implements BlobInterface
             self::AD_ACCOUNT_ID         => $this->adAccountId,
             self::PAGE_ID               => $this->pageId,
             self::ACCESS_TOKEN          => $this->accessToken,
-            self::CREATIVE              => isset($this->creative) ? $this->creative->toArray() : null,
             self::BUDGET                => isset($this->budget) ? $this->budget->toArray() : null,
             self::VERSION               => self::CURRENT_VERSION
         ];
@@ -346,6 +345,15 @@ class UnmanagedFacebookBlob implements BlobInterface
         }
 
         $array[self::AD_SETS] = $adSets;
+
+        $creatives = null;
+        if (!empty($this->creatives)) {
+            foreach ($this->creatives as $creative) {
+                $creatives[] = $creative->toArray();
+            }
+        }
+
+        $array[self::CREATIVES] = $creatives;
 
         return $array;
     }
@@ -371,6 +379,15 @@ class UnmanagedFacebookBlob implements BlobInterface
         $this->adAccountId          = $this->safeGet($array, self::AD_ACCOUNT_ID);
         $this->pageId               = $this->safeGet($array, self::PAGE_ID);
         $this->accessToken          = $this->safeGet($array, self::ACCESS_TOKEN);
+
+        $creatives = $this->safeGet($array, self::CREATIVES, []);
+        foreach ($creatives as $creative) {
+            $fbCreative = new FacebookCreative();
+            $fbCreative->fromArray($creative);
+            $creatives[] = $fbCreative;
+        }
+        $this->creatives = $creatives;
+
         $adSetResults               = [];
         $adSets                     = $this->safeGet($array, self::AD_SETS, []);
         foreach ($adSets as $adSetArray) {
@@ -379,7 +396,7 @@ class UnmanagedFacebookBlob implements BlobInterface
             $adSetResults[] = $adSet;
         }
         $this->adSets   = $adSetResults; // versioned, might need builder
-        $this->creative = new FacebookCreative($this->safeGet($array, self::CREATIVE)); // versioned, might need builder
+
         $budget = new Budget(null);
         $budget->fromArray($this->safeGet($array, self::BUDGET));
         $this->budget  = $budget;
