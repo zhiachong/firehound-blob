@@ -85,4 +85,9 @@ class FacebookAudienceTargeting
         $this->type = $this->safeGet($array, self::TYPE);
         $this->ids  = $this->safeGet($array, self::IDS);
     }
+
+    public function isEmpty()
+    {
+        return empty($this->type) && empty($this->ids);
+    }
 }

@@ -241,4 +241,9 @@ class FacebookGeographicTargeting implements BlobInterface
         $this->setCityAction($this->safeGet($array, self::CITY_ACTION));
         $this->setPostalAction($this->safeGet($array, self::POSTAL_ACTION));
     }
+
+    public function isEmpty()
+    {
+        return empty($this->countryIds) && empty($this->regionIds) && empty($this->cityIds) && empty($this->postalCodes);
+    }
 }
