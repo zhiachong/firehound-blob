@@ -103,7 +103,7 @@ class UnmanagedFacebookValidator implements ScenarioValidator
         }
 
         $pageId = $facebookBlob->getPageId();
-        if (empty($pageId) || !is_string($pageId)) {
+        if (empty($pageId) || !(is_numeric($pageId) || is_string($pageId))) {
             $validationMessage .= "Blob doesn't contain a valid page ID. ";
             $validationResult = false;
         }
@@ -149,8 +149,8 @@ class UnmanagedFacebookValidator implements ScenarioValidator
         $validationResult = true;
         $validationMessage = "";
 
-        $geographicTargeting = $facebookBlob->getGeographicTargeting();
-        if (!empty($geographicTargeting) && !$geographicTargeting->isValid()) {
+        $geographicTargeting = $facebookBlob->getGeographicTargeting(); // instantiated by default
+        if (!empty($geographicTargeting) && !$geographicTargeting->isEmpty() && !$geographicTargeting->isValid()) {
             $validationMessage .= "Geographic targeting is invalid. ";
             $validationResult = false;
         }
@@ -161,8 +161,8 @@ class UnmanagedFacebookValidator implements ScenarioValidator
             $validationResult = false;
         }
 
-        $audienceTargeting = $facebookBlob->getAudienceTargeting();
-        if (!empty($audienceTargeting) && !$audienceTargeting->isValid()) {
+        $audienceTargeting = $facebookBlob->getAudienceTargeting(); // instantiated by default
+        if (!empty($audienceTargeting) && !$audienceTargeting->isEmpty() && !$audienceTargeting->isValid()) {
             $validationMessage .= "Audience targeting is invalid. ";
             $validationResult = false;
         }
