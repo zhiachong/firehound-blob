@@ -65,6 +65,48 @@ class UnmanagedFacebookValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $results->getResult());
     }
 
+    public function test_isValidCreateBlob_UsingAValidBlobForCreate_WithIntPage_ReturnsTrue()
+    {
+        $mockScenarioBlob    = $this->getMockBuilder('PaperG\FirehoundBlob\ScenarioBlob')->disableOriginalConstructor()->getMock();
+        $mockUnmanagedFbBlob = $this->getMockBuilder('PaperG\FirehoundBlob\Facebook\UnmanagedFacebookBlob')->disableOriginalConstructor()
+            ->getMock();
+        $mockAdSet           = $this->getMockBuilder('PaperG\FirehoundBlob\Facebook\FacebookAdSet')->disableOriginalConstructor()
+            ->getMock();
+        $mockCreative        = $this->getMockBuilder('PaperG\FirehoundBlob\Facebook\FacebookCreative')->disableOriginalConstructor()
+            ->getMock();
+        $mockCreative->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(true));
+
+        $mockAdSet->expects($this->once())
+            ->method('validate')
+            ->will($this->returnValue(true));
+        $mockUnmanagedFbBlob->expects($this->once())
+            ->method('getAdAccountId')
+            ->will($this->returnValue('123-abc'));
+        $mockUnmanagedFbBlob->expects($this->once())
+            ->method('getPageId')
+            ->will($this->returnValue(123));
+        $mockUnmanagedFbBlob->expects($this->once())
+            ->method('getAccessToken')
+            ->will($this->returnValue('123-abc'));
+        $mockUnmanagedFbBlob->expects($this->once())
+            ->method('getStatus')
+            ->will($this->returnValue('active'));
+        $mockUnmanagedFbBlob->expects($this->once())
+            ->method('getCreatives')
+            ->will($this->returnValue([$mockCreative]));
+        $mockUnmanagedFbBlob->expects($this->once())
+            ->method('getAdSets')
+            ->will($this->returnValue([$mockAdSet]));
+        $mockScenarioBlob->expects($this->once())
+            ->method('getBlob')
+            ->will($this->returnValue($mockUnmanagedFbBlob));
+
+        $results = $this->sut->isValidCreateBlob($mockScenarioBlob);
+        $this->assertEquals(true, $results->getResult());
+    }
+
     public function test_isValidCreateBlob_UsingInvalidBlobForCreate_ReturnsFalseAndErrorMessage()
     {
         $mockScenarioBlob    = $this->getMockBuilder('PaperG\FirehoundBlob\ScenarioBlob')->disableOriginalConstructor()->getMock();
