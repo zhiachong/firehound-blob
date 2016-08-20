@@ -4,6 +4,7 @@ namespace PaperG\FirehoundBlob\Dcm\Validators;
 
 
 use PaperG\FirehoundBlob\Dcm\UnmanagedDcmBlob;
+use PaperG\FirehoundBlob\ScenarioBlob;
 use PaperG\FirehoundBlob\ScenarioValidators\ScenarioValidator;
 use PaperG\FirehoundBlob\ScenarioValidators\ValidationResult;
 
@@ -17,16 +18,20 @@ class UnmanagedDcmBlobValidator implements ScenarioValidator
     }
 
     /**
-     * @param UnmanagedDcmBlob $blob
+     * @param ScenarioBlob $blob
      * @return ValidationResult
      */
     public function isValidCreateBlob($blob)
     {
-        $result = $this->isValid($blob);
+        /**
+         * @var $dcmBlob UnmanagedDcmBlob
+         */
+        $dcmBlob = $blob->getBlob();
+        $result = $this->isValid($dcmBlob);
         $valid = $result->getResult();
         $messages = [$result->getMessage()];
 
-        $assets = $blob->getCreativeAssets();
+        $assets = $dcmBlob->getCreativeAssets();
 
         if (!empty($assets)) {
             foreach ($assets as $asset) {
@@ -42,15 +47,19 @@ class UnmanagedDcmBlobValidator implements ScenarioValidator
     }
 
     /**
-     * @param UnmanagedDcmBlob $blob
+     * @param ScenarioBlob $blob
      * @return ValidationResult
      */
     public function isValidUpdateBlob($blob)
     {
-        $result = $this->isValid($blob);
+        /**
+         * @var $dcmBlob UnmanagedDcmBlob
+         */
+        $dcmBlob = $blob->getBlob();
+        $result = $this->isValid($dcmBlob);
         $valid = $result->getResult();
         $messages = [$result->getMessage()];
-        $assets = $blob->getCreativeAssets();
+        $assets = $dcmBlob->getCreativeAssets();
         if (!empty($assets)) {
             foreach ($assets as $asset) {
                 $result = $this->assetValidator->isValidUpdate($asset);
