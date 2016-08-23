@@ -13,6 +13,8 @@ class UnmanagedDcmBlob implements BlobInterface
     const PUBLICATION_ID = 'publicationId';
     const GOOGLE_ADVERTISER_ID = 'googleAdvertiserId';
     const CREATIVE_ASSETS = 'creativeAssets';
+    const STATUS_CALLBACK_URL = 'callbackUrl';
+    const STATUS_CALLBACK_HEADERS = 'callbackHeaders';
 
     /**
      * @var int
@@ -29,6 +31,10 @@ class UnmanagedDcmBlob implements BlobInterface
      */
     private $creativeAssets;
 
+    private $statusCallbackUrl;
+
+    private $statusCallbackHeaders;
+
     public function __construct($array = [])
     {
         $this->fromArray($array);
@@ -43,7 +49,9 @@ class UnmanagedDcmBlob implements BlobInterface
         return [
             self::PUBLICATION_ID => $this->publicationId,
             self::GOOGLE_ADVERTISER_ID => $this->advertiserId,
-            self::CREATIVE_ASSETS => $assets
+            self::CREATIVE_ASSETS => $assets,
+            self::STATUS_CALLBACK_URL => $this->statusCallbackUrl,
+            self::STATUS_CALLBACK_HEADERS => $this->statusCallbackHeaders
         ];
     }
 
@@ -52,6 +60,8 @@ class UnmanagedDcmBlob implements BlobInterface
         $this->publicationId = $this->safeGet($array, self::PUBLICATION_ID);
         $this->advertiserId = $this->safeGet($array, self::GOOGLE_ADVERTISER_ID);
         $assets = $this->safeGet($array, self::CREATIVE_ASSETS, []);
+        $this->statusCallbackUrl = $this->safeGet($array, self::STATUS_CALLBACK_URL);
+        $this->statusCallbackHeaders = $this->safeGet($array, self::STATUS_CALLBACK_HEADERS);
 
         $this->creativeAssets = [];
         foreach($assets as $assetArray) {
@@ -105,5 +115,37 @@ class UnmanagedDcmBlob implements BlobInterface
     public function getPublicationId()
     {
         return $this->publicationId;
+    }
+
+    /**
+     * @param mixed $callbackHeaders
+     */
+    public function setStatusCallbackHeaders($callbackHeaders)
+    {
+        $this->statusCallbackHeaders = $callbackHeaders;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatusCallbackHeaders()
+    {
+        return $this->statusCallbackHeaders;
+    }
+
+    /**
+     * @param mixed $callbackUrl
+     */
+    public function setStatusCallbackUrl($callbackUrl)
+    {
+        $this->statusCallbackUrl = $callbackUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatusCallbackUrl()
+    {
+        return $this->statusCallbackUrl;
     }
 } 
