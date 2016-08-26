@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "definitions": {
+        "unmanagedFacebookBlob": {"$ref": "unmanagedFacebookBlob.json"},
+        "adSet": {"$ref": "facebookAdSet.json"},
+        "creative": {"$ref": "facebookCreative.json"}
+    },
+    "allOf": [
+        {"$ref": "#/definitions/unmanagedFacebookBlob"},
+        {
+            "properties": {
+                "status": {"enum": ["active", "inactive"]},
+                "adSets": {
+                    "type": "array",
+                    "items": {"$ref":"#/definitions/adSet"},
+                    "minItems": 1
+                },
+                "creatives": {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/creative"},
+                    "minItems": 1
+                }
+            },
+            "required": ["status", "adSets"]
+        }
+    ]
+}

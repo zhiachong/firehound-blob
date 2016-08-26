@@ -1,0 +1,78 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Basic schema.  We have different requirements for create vs update, so this makes most things optional",
+    "definitions": {
+        "creative": {"$ref": "facebookCreative.json"},
+        "adSet": {"$ref": "facebookAdSet.json"},
+        "budget": {"$ref": "../CampaignData/budget.json"},
+        "audienceTargeting": {"$ref": "Targeting/facebookAudienceTargeting.json"},
+        "demographicTargeting": {"$ref": "Targeting/facebookDemographicTargeting.json"},
+        "geographicTargeting": {"$ref": "Targeting/facebookGeographicTargeting.json"}
+    },
+    "type": "object",
+    "properties": {
+        "status": {"type": ["string", "null"]},
+        "adAccountId": {"type": "string"},
+        "pageId": {"type": ["string", "number"]},
+        "accessToken": {"type": "string"},
+        "geographicTargeting": {
+            "oneOf": [
+                {"type": "null"},
+                {"$ref": "#/definitions/geographicTargeting"}
+            ]
+        },
+        "demographicTargeting": {
+            "oneOf": [
+                {"type": "null"},
+                {"$ref": "#/definitions/demographicTargeting"}
+            ]
+        },
+        "audienceTargeting": {
+            "oneOf": [
+                {"type": "null"},
+                {"$ref": "#/definitions/audienceTargeting"}
+            ]
+        },
+        "startDate": {
+            "type": ["number", "null"]
+        },
+        "endDate": {
+            "type": ["number", "null"]
+        },
+        "budget": {
+            "oneOf": [
+                {"type": "null"},
+                {
+                    "allOf": [
+                        {"$ref": "#/definitions/budget"},
+                        {
+                            "properties": {
+                                "budget_type": {"enum":["daily"]},
+                                "type": {"enum":["dollar"]}
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "adSets": {
+            "oneOf": [
+                {"type": "null"},
+                {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/adSet"}
+                }
+            ]
+        },
+        "creatives": {
+            "oneOf": [
+                {"type": "null"},
+                {
+                    "type": "array",
+                    "items": {"$ref": "#/definitions/creative"}
+                }
+            ]
+        }
+    },
+    "required": ["adAccountId", "pageId", "accessToken"]
+}

@@ -37,22 +37,29 @@ class UnmanagedDcmBlobValidatorTest extends \FirehoundBlobTestCase
         $this->sut->isValidCreateBlob($testBlob);
     }
 
-    public function testIsValidUpdateBlob() {
+    public function testIsValidUpdateBlob()
+    {
+        $assetArray = [
+            "uuid" => "blah",
+            "imageUrl" => "image url"
+        ];
+        $mockCreativeAsset = $this->buildMock('PaperG\FirehoundBlob\Dcm\DcmCreativeAsset');
+        $this->addExpectation($mockCreativeAsset, $this->atLeastOnce(), 'toArray', null, $assetArray);
+        $mockAssets = [$mockCreativeAsset];
         $mockValidationResult = $this->buildMock('PaperG\FirehoundBlob\ScenarioValidators\ValidationResult');
         $this->addExpectation($mockValidationResult, $this->once(), 'getResult', null, true);
-
-        $mockCreativeAsset = $this->buildMock('PaperG\FirehoundBlob\Dcm\DcmCreativeAsset');
-        $mockAssets = [$mockCreativeAsset];
-
         $this->addExpectation($this->mockValidator, $this->once(), 'isValidUpdate', null, $mockValidationResult);
-
         $dcmBlob = new UnmanagedDcmBlob();
         $dcmBlob->setAdvertiserId(1234);
         $dcmBlob->setCreativeAssets($mockAssets);
         $dcmBlob->setPublicationId(1234);
+        $dcmBlob->setStatusCallbackUrl("mock callback url");
+        $dcmBlob->setStatusCallbackHeaders(["header" => "value"]);
 
         $testBlob = new ScenarioBlob();
         $testBlob->setBlob($dcmBlob);
-        $this->sut->isValidUpdateBlob($testBlob);
+        $result = $this->sut->isValidUpdateBlob($testBlob);
+        $this->assertTrue($result->getResult());
+        $this->assertEmpty($result->getMessage());
     }
 } 

@@ -34,7 +34,9 @@ class DcmCreativeAssetValidatorTest extends \FirehoundBlobTestCase
         $invalidAsset = new DcmCreativeAsset();
         $result = $this->sut->isValidCreate($invalidAsset);
         $this->assertFalse($result->getResult());
-        $expectedString = "Uuid is required for create. ImageUrl is required for create. AdTag is required for create.";
+        $expectedString = "[uuid] NULL value found, but a string is required. "
+            . "ImageUrl is required for create. "
+            . "AdTag is required for create.";
         $this->assertEquals($expectedString, $result->getMessage());
     }
 
@@ -54,7 +56,7 @@ class DcmCreativeAssetValidatorTest extends \FirehoundBlobTestCase
         $invalidAsset->setUuid('mock uuid');
         $result = $this->sut->isValidUpdate($invalidAsset);
         $this->assertFalse($result->getResult());
-        $expectedString = "At least ad tag or image url must be given for update, neither were provided.";
+        $expectedString = "Ad Tag or Image Url must be provided";
         $this->assertEquals($expectedString, $result->getMessage());
     }
 
@@ -66,7 +68,10 @@ class DcmCreativeAssetValidatorTest extends \FirehoundBlobTestCase
         $validAsset->setAdTag('mock ad tag');
         $validAsset->setAdSizeName(1234);
         $result = $this->sut->isValidCreate($validAsset);
-        $this->assertEquals('Ad size name must be a string', $result->getMessage());
+        $this->assertEquals(
+            '[adSizeName] Integer value found, but a string or a null is required.',
+            $result->getMessage()
+        );
         $this->assertFalse($result->getResult());
     }
 
@@ -78,7 +83,7 @@ class DcmCreativeAssetValidatorTest extends \FirehoundBlobTestCase
         $validAsset->setAdTag('mock ad tag');
         $validAsset->setAdSizeName(1234);
         $result = $this->sut->isValidUpdate($validAsset);
-        $this->assertEquals('Ad size name must be a string', $result->getMessage());
+        $this->assertEquals('[adSizeName] Integer value found, but a string or a null is required.', $result->getMessage());
         $this->assertFalse($result->getResult());
     }
 

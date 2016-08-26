@@ -366,15 +366,18 @@ class UnmanagedFacebookBlob implements BlobInterface
         $this->status               = $this->safeGet($array, self::STATUS);
         $this->endDate              = $this->safeGet($array, self::END_DATE);
         $this->startDate            = $this->safeGet($array, self::START_DATE);
-        $this->geographicTargeting  = new FacebookGeographicTargeting(
-            $this->safeGet($array, self::GEOGRAPHIC_TARGETING)
-        );
-        $this->demographicTargeting = new FacebookDemographicTargeting(
-            $this->safeGet($array, self::DEMOGRAPHIC_TARGETING)
-        ); // versioned
-        $this->audienceTargeting    = new FacebookAudienceTargeting(
-            $this->safeGet($array, self::AUDIENCE_TARGETING)
-        ); // versioned
+        $geographicTargeting = $this->safeGet($array, self::GEOGRAPHIC_TARGETING);
+        if (!empty($geographicTargeting)) {
+            $this->geographicTargeting  = new FacebookGeographicTargeting($geographicTargeting);
+        }
+        $demographicTargeting = $this->safeGet($array, self::DEMOGRAPHIC_TARGETING);
+        if (!empty($demographicTargeting)) {
+            $this->demographicTargeting = new FacebookDemographicTargeting($demographicTargeting); // versioned
+        }
+        $audienceTargeting = $this->safeGet($array, self::AUDIENCE_TARGETING);
+        if (!empty($audienceTargeting)) {
+            $this->audienceTargeting    = new FacebookAudienceTargeting($audienceTargeting); // versioned
+        }
         $this->objectsToUpdate      = $this->safeGet($array, self::OBJECTS_TO_UPDATE);
         $this->adAccountId          = $this->safeGet($array, self::AD_ACCOUNT_ID);
         $this->pageId               = $this->safeGet($array, self::PAGE_ID);
@@ -396,9 +399,12 @@ class UnmanagedFacebookBlob implements BlobInterface
             $adSetResults[] = $adSet;
         }
         $this->adSets   = $adSetResults; // versioned, might need builder
-
-        $budget = new Budget(null);
-        $budget->fromArray($this->safeGet($array, self::BUDGET));
-        $this->budget  = $budget;
+        $budget = $this->safeGet($array, self::BUDGET);
+        if (!empty($budget))
+        {
+            $budget = new Budget(null);
+            $budget->fromArray($this->safeGet($array, self::BUDGET));
+            $this->budget  = $budget;
+        }
     }
 }

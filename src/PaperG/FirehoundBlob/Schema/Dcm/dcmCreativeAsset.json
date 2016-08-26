@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "uuid": {"type": "string"},
+        "name": {"type": ["string", "null"]},
+        "width": {"type": ["number", "null"]},
+        "height": {"type": ["number", "null"]},
+        "adSizeName": {"type": ["string", "null"]},
+        "adTag": {
+            "oneOf": [
+                {"type": "string"},
+                {"type": "null"}
+            ]
+        },
+        "imageUrl": {
+            "oneOf": [
+                {"type": "string"},
+                {"type": "null"}
+            ]
+        }
+    },
+    "anyOf": [
+        {"required": ["adTag"]},
+        {"required": ["imageUrl"]}
+    ],
+    "required": ["uuid"]
+}

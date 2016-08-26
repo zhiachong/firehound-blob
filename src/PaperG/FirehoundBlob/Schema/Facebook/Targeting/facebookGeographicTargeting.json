@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "countryAction": {
+            "type": ["string", "null"]
+        },
+        "countryIds": {
+            "type": ["array", "null"]
+        },
+        "cityAction": {
+            "type": ["string", "null"]
+        },
+        "cityIds": {
+            "type": ["array", "null"]
+        },
+        "regionAction": {
+            "type": ["string", "null"]
+        },
+        "regionIds": {
+            "type": ["array", "null"]
+        },
+        "postalAction": {
+            "type": ["string", "null"]
+        },
+        "postalCodes": {
+            "type": ["array", "null"]
+        }
+    },
+    "anyOf": [
+        {"required": ["countryAction", "countryIds"]},
+        {"required": ["cityAction", "cityIds"]},
+        {"required": ["regionAction", "regionIds"]},
+        {"required": ["postalAction", "postalIds"]}
+    ]
+}

@@ -43,18 +43,19 @@ class BasicInfoValidator implements ScenarioValidator
             $validationMessage .= "Basic info's UUID is not a valid string. ";
         }
 
-        $metadata = $basicInfo->getMetadata();
-        if (!empty($metadata) && !is_string($metadata)) {
-            $validationResult = false;
-            $validationMessage .= "Basic info's metadata is not a valid string. ";
-        }
-
         $scenario       = $basicInfo->getScenario();
         if (empty($scenario) ||
             !is_string($scenario)
         ) {
             $validationResult = false;
             $validationMessage .= "Basic info does not contain valid scenario. ";
+        }
+
+        //Not required
+        $metadata = $basicInfo->getMetadata();
+        if (!empty($metadata) && !is_string($metadata)) {
+            $validationResult = false;
+            $validationMessage .= "Basic info's metadata is not a valid string. ";
         }
 
         return new ValidationResult($validationResult, $validationMessage);

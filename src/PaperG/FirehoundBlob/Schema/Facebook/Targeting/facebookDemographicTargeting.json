@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "minAge": {
+            "type": "number",
+            "minimum": 18
+        },
+        "maxAge": {
+            "type": "number",
+            "maximum": 65
+        },
+        "gender": {
+            "enum": ["male", "female", "null"]
+        }
+    },
+    "required": ["type", "ids"]
+}
