@@ -11,7 +11,6 @@ class BasicInfo implements BlobInterface
     const UUID = "uuid";
     const METADATA = "metadata";
     const SCENARIO = "scenario";
-    const BLOB = "blob";
     const VERSION = 'version';
 
     const CURRENT_VERSION  = 1;
@@ -35,11 +34,6 @@ class BasicInfo implements BlobInterface
      * @var string
      */
     private $scenario;
-
-    /**
-     * @var BlobInterface
-     */
-    private $blob;
 
     public function __construct($array = null) {
         $this->fromArray($array);
@@ -105,22 +99,6 @@ class BasicInfo implements BlobInterface
     }
 
     /**
-     * @param BlobInterface $subBlob
-     */
-    public function setBlob($subBlob)
-    {
-        $this->blob = $subBlob;
-    }
-
-    /**
-     * @return BlobInterface
-     */
-    public function getBlob()
-    {
-        return $this->blob;
-    }
-
-    /**
      * @param string $uuid
      */
     public function setUuid($uuid)
@@ -143,7 +121,6 @@ class BasicInfo implements BlobInterface
             self::UUID     => $this->getUuid(),
             self::METADATA => $this->getMetadata(),
             self::SCENARIO => $this->getScenario(),
-            self::BLOB     => isset($this->blob) ? $this->getBlob()->toArray() : null,
             self::VERSION  => self::CURRENT_VERSION
         ];
     }
@@ -154,7 +131,6 @@ class BasicInfo implements BlobInterface
         $this->setUuid($this->safeGet($array, self::UUID));
         $this->setMetadata($this->safeGet($array, self::METADATA));
         $this->setScenario($this->safeGet($array, self::SCENARIO));
-        $this->setBlob($this->safeGet($array, self::BLOB));
     }
 
     public function validate()

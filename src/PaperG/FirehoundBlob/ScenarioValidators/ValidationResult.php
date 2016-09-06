@@ -22,4 +22,23 @@ class ValidationResult
     {
         return $this->message;
     }
+
+    public function setResult($result)
+    {
+        $this->result = $result;
+        return $this;
+    }
+
+    public function appendError($message)
+    {
+        if (!empty($message)) {
+            $delimiter = ' ';
+            if (empty($this->message)) {
+                $delimiter = '';
+            }
+            $this->message .= $delimiter . $message;
+        }
+
+        return $this;
+    }
 } 

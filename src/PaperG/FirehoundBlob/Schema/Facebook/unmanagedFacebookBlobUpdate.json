@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Schema for what an update contains. More optional fields than create",
+    "type": "object",
+    "definitions": {
+        "unmanagedFacebookBlob": {"$ref": "unmanagedFacebookBlob.json"},
+        "adSet": {"$ref": "facebookAdSet.json"},
+        "creative": {"$ref": "facebookCreative.json"}
+    },
+    "allOf": [
+        {"$ref": "#/definitions/unmanagedFacebookBlob"},
+        {
+            "properties": {
+                "status": {
+                    "oneOf": [
+                        {"type": "null"},
+                        {"enum": ["active", "inactive"]}
+                    ]
+                },
+                "adSets": {
+                    "oneOf": [
+                        {"type": "null"},
+                        {
+                            "type": "array",
+                            "items": {"$ref": "#/definitions/adSet"}
+                        }
+                    ]
+                },
+                "creatives": {
+                    "oneOf": [
+                        {"type": "null"},
+                        {
+                            "type": "array",
+                            "items": {"$ref": "#/definitions/creative"}
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

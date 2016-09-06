@@ -1,0 +1,12 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"},
+        "uuid": {"type": "string"},
+        "metadata": {"type": "string"},
+        "scenario": {"type": "string"},
+        "version": {"type": "integer"}
+    },
+    "required": ["name", "uuid", "scenario"]
+}

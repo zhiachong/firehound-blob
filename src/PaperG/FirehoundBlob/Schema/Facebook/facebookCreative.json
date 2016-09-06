@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {
+        "creativeData": {"$ref": "facebookCreativeData.json"}
+    },
+    "type": "object",
+    "properties": {
+        "primary": {"$ref": "#/definitions/creativeData"},
+        "type": {"enum": ["link", "carousel"]},
+        "child_attachments": {
+            "type": ["array", "null"],
+            "items": {"$ref": "#/definitions/creativeData"}
+        }
+    },
+    "required": ["primary", "type"]
+}

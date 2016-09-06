@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "definitions": {
+        "creativeAsset": {"$ref": "dcmCreativeAsset.json"}
+    },
+    "properties": {
+        "publicationId": {"type": "number"},
+        "googleAdvertiserId": {"type": "number"},
+        "creativeAssets": {
+            "type": "array",
+            "items": {"$ref": "#/definitions/creativeAsset"},
+            "minItems": 1
+        },
+        "callbackUrl": {"type": "string"},
+        "callbackHeaders": {"type": "object"}
+    }
+}

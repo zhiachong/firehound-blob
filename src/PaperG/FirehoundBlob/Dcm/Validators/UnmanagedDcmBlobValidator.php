@@ -4,17 +4,27 @@ namespace PaperG\FirehoundBlob\Dcm\Validators;
 
 
 use PaperG\FirehoundBlob\Dcm\UnmanagedDcmBlob;
+use PaperG\FirehoundBlob\JsonValidator;
 use PaperG\FirehoundBlob\ScenarioBlob;
 use PaperG\FirehoundBlob\ScenarioValidators\ScenarioValidator;
 use PaperG\FirehoundBlob\ScenarioValidators\ValidationResult;
 
-class UnmanagedDcmBlobValidator implements ScenarioValidator
+class UnmanagedDcmBlobValidator extends JsonValidator implements ScenarioValidator
 {
+
+    const RELATIVE_PATH = '/../../Schema/Dcm/unmanagedDcmBlob.json';
+
     private $assetValidator;
 
     public function __construct(DcmCreativeAssetValidator $assetValidator = null)
     {
+        parent::__construct();
         $this->assetValidator = isset($assetValidator) ? $assetValidator : new DcmCreativeAssetValidator();
+    }
+
+    protected function getSchemaPath()
+    {
+        return 'file://' . realpath(__DIR__ . self::RELATIVE_PATH);
     }
 
     /**
@@ -56,9 +66,14 @@ class UnmanagedDcmBlobValidator implements ScenarioValidator
          * @var $dcmBlob UnmanagedDcmBlob
          */
         $dcmBlob = $blob->getBlob();
-        $result = $this->isValid($dcmBlob);
-        $valid = $result->getResult();
-        $messages = [$result->getMessage()];
+        $dcmResult = $this->isValid($dcmBlob);
+        $valid = $dcmResult->getResult();
+        $messages = [];
+        $message = $dcmResult->getMessage();
+        if (!empty($message)) {
+            $messages[] = $message;
+        }
+
         $assets = $dcmBlob->getCreativeAssets();
         if (!empty($assets)) {
             foreach ($assets as $asset) {
@@ -70,7 +85,7 @@ class UnmanagedDcmBlobValidator implements ScenarioValidator
             }
         }
 
-        return new ValidationResult($valid, implode(' ', $messages));
+        return new ValidationResult($valid, implode(" ", $messages));
     }
 
     /**
@@ -78,27 +93,6 @@ class UnmanagedDcmBlobValidator implements ScenarioValidator
      * @return ValidationResult
      */
     private function isValid(UnmanagedDcmBlob $blob) {
-        $valid = true;
-        $messages = [];
-
-        $advertiserId = $blob->getAdvertiserId();
-        if (empty($advertiserId)) {
-            $valid = false;
-            $messages[] = 'Missing AdvertiserId for UnmanagedDcmBlob creation request.';
-        }
-
-        $assets = $blob->getCreativeAssets();
-        if (empty($assets)) {
-            $valid = false;
-            $messages[] = 'DCM blob must have creative assets.';
-        }
-
-        $publicationId = $blob->getPublicationId();
-        if (empty($publicationId)) {
-            $valid = false;
-            $messages[] = 'Missing AdvertiserId for UnmanagedDcmBlob creation request.';
-        }
-
-        return new ValidationResult($valid, implode(' ', $messages));
+        return $this->validate($blob->toArray());
     }
 } 

@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "amount": {
+            "type": "number",
+            "minimum": 1
+        },
+        "type": {
+            "enum": ["impression", "dollar"]
+        },
+        "budget_type": {
+            "type": ["string", "null"],
+            "enum": ["lifetime", "daily"]
+        }
+    },
+    "required": ["amount", "type"]
+}

@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {
+        "basicInfo": {"$ref": "basicInfo.json"},
+        "unmanagedDcmBlob": {"$ref": "Dcm/unmanagedDcmBlob.json"},
+        "unmanagedFacebookBlobCreate": {"$ref": "Facebook/createUnmanagedFacebookBlob.json"},
+        "unmanagedFacebookBlobUpdate": {"$ref": "Facebook/updateUnmanagedFacebookBlob.json"}
+
+    },
+    "type": "object",
+    "properties": {
+        "basicInfo": {"$ref": "#/definitions/basicInfo"},
+        "blob": {
+            "oneOf": [
+                {"$ref": "#/definitions/unmanagedDcmBlob"},
+                {"$ref": "#/definitions/unmanagedFacebookBlob"}
+            ]
+        }
+    },
+    "required": ["basicInfo", "blob"]
+}

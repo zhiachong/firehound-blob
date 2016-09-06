@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "optimizationGoal": {"type": ["string", "null"]},
+        "bidAmount": {"type": ["number", "null"]},
+        "placements": {
+            "type": ["array", "null"],
+            "items": {"type": "string"}
+        },
+        "adSetId": {"type": ["string", "null"]},
+        "type": {"type":["string", "null"]}
+    }
+}
