@@ -10,10 +10,12 @@ class FacebookContext
     const AD_SETS = "adSets";
     const PAGE_ID = "pageId";
     const ACCESS_TOKEN = "accessToken";
+    const IG_ACTOR_ID = "igActorId";
 
     private $adAccountId = null;
     private $pageId = null;
     private $accessToken = null;
+    private $igActorId = null;
 
     /**
      * @var FacebookAdSet[]
@@ -50,6 +52,16 @@ class FacebookContext
         $this->accessToken = $accessToken;
     }
 
+    public function getIgActorId()
+    {
+        return $this->igActorId;
+    }
+
+    public function setIgActorId($igActorId)
+    {
+        $this->igActorId = $igActorId;
+    }
+
     /**
      * @param $adSets FacebookAdSet[]
      */
@@ -75,7 +87,8 @@ class FacebookContext
             self::AD_ACCOUNT_ID => $this->adAccountId,
             self::AD_SETS => $adSets,
             self::PAGE_ID => $this->pageId,
-            self::ACCESS_TOKEN => $this->accessToken
+            self::ACCESS_TOKEN => $this->accessToken,
+            self::IG_ACTOR_ID => $this->igActorId
         );
     }
 
@@ -84,6 +97,7 @@ class FacebookContext
         $this->adAccountId = isset($array[self::AD_ACCOUNT_ID]) ? $array[self::AD_ACCOUNT_ID] : null;
         $this->pageId = isset($array[self::PAGE_ID]) ? $array[self::PAGE_ID] : null;
         $this->accessToken = isset($array[self::ACCESS_TOKEN]) ? $array[self::ACCESS_TOKEN] : null;
+        $this->igActorId = isset($array[self::IG_ACTOR_ID]) ? $array[self::IG_ACTOR_ID] : null;
 
         $adSets = array();
         if (isset($array[self::AD_SETS])) {
