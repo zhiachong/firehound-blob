@@ -33,6 +33,7 @@ class FacebookContextTest extends FirehoundBlobTestCase
     {
         $mockPageID = "mockPageId";
         $mockAdAccountID = "mockAdAccountId";
+        $mockIgActorId = "mockIgActorId";
         $mockAdSetArray = array("adSetId" => "bar");
         $mockAdSet = $this->buildMock('\PaperG\FirehoundBlob\Facebook\FacebookAdSet');
         $mockAdSet->expects($this->once())
@@ -43,19 +44,22 @@ class FacebookContextTest extends FirehoundBlobTestCase
         $facebookContext->setAdAccountId($mockAdAccountID);
         $facebookContext->setPageId($mockPageID);
         $facebookContext->setAdSets($mockAdSets);
+        $facebookContext->setIgActorId($mockIgActorId);
         $expectedArray = array(
             FacebookContext::PAGE_ID => $mockPageID,
             FacebookContext::AD_ACCOUNT_ID => $mockAdAccountID,
             FacebookContext::AD_SETS => array(
                 $mockAdSetArray
             ),
-            FacebookContext::ACCESS_TOKEN => null
+            FacebookContext::ACCESS_TOKEN => null,
+            FacebookContext::IG_ACTOR_ID => $mockIgActorId
         );
         $associativeArray = $facebookContext->toAssociativeArray();
         $this->assertEquals($expectedArray, $associativeArray);
         $facebookContext->setAdSets(null);
         $facebookContext->setPageId(null);
         $facebookContext->setAdAccountId(null);
+        $facebookContext->setIgActorId(null);
         $facebookContext->fromAssociativeArray($associativeArray);
         $this->assertEquals($mockPageID, $facebookContext->getPageId());
         $this->assertEquals($mockAdAccountID, $facebookContext->getAdAccountId());
