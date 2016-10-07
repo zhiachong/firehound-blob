@@ -29,6 +29,8 @@ class Context
     CONST APPNEXUS_OBJECT_INCLUSIONS = "appnexusObjectInclusions"; //an AppNexus specific component to specify which objects to update
     CONST FACEBOOK_CONTEXT          = "facebookContext";
 
+    CONST DEDICATED_PLATFORM        = "dedicatedPlatform";
+
     //These are values used mostly by AppNexus
     CONST PUBLICATION_NAME          = "publicationName"; //string
     CONST PUBLICATION_ID            = "publicationId"; //int
@@ -274,5 +276,21 @@ class Context
     public function setFacebookContext($facebookContext)
     {
         self::setValueByKey(self::FACEBOOK_CONTEXT, $facebookContext);
+    }
+
+    /**
+    * @return boolean
+    */
+    public function getDedicatedPlatform()
+    {
+        return self::getValueByKey(self::DEDICATED_PLATFORM);
+    }
+
+    /**
+    * @return null
+    */
+    public function setDedicatedPlatform($dedicatedPlatform)
+    {
+        self::setValueByKey(self::DEDICATED_PLATFORM, $dedicatedPlatform);
     }
 }
